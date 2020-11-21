@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Authorization</title>
+    <link rel="stylesheet" type="text/css" href="app.css">
+</head>
+<body>
+<div class="login-column">
+    <h1>Authorization</h1>
+
+    <form class="form">
+        <div class="caption">Login</div>
+        <input
+                id="login"
+                class="input"
+                type="text"
+                placeholder="Login">
+    </form>
+    <form class="form">
+        <div class="caption">Password</div>
+        <input
+                id="password"
+                class="input"
+                type="password"
+                placeholder="Password">
+        <button
+                class="form-button"
+                type="button">
+            <img src="assets/eye1_svg.svg">
+        </button>
+    </form>
+
+    <button id="button" class="next">Authorization</button>
+
+
+</div>
+<script>
+    const b = document.getElementById('button')
+
+    b.onclick = () => {
+        const inputs = document.getElementsByTagName('input')
+
+        const o = {}
+
+        for (let i = 0; i < inputs.length; i++) {
+            const input = inputs[i]
+
+            o[input.id] = input.value
+        }
+
+        console.log(o)
+    }
+</script>
+</body>
+</html>
