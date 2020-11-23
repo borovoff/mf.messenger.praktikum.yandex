@@ -17,6 +17,12 @@
     overflow-y: auto;
 }
 
+.ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
 .chat {
     margin: 2px 2px 2px 8px;
     padding: 8px 12px 8px 8px;

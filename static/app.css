@@ -147,7 +147,7 @@
     color: rgb(102, 102, 102);
 }
 
-.form {
+.input-unit {
     position: relative;
     width: var(--form-width);
     height: var(--form-height);
@@ -260,9 +260,7 @@
 
 .photo-picker {
     --diameter: 500px;
-    position: absolute;
-    top: calc(50% - var(--diameter) / 2);
-    left: calc(50% - var(--diameter) / 2);
+    position: relative;
     width: var(--diameter);
     height: var(--diameter);
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
@@ -272,12 +270,17 @@
     z-index: 1;
 }
 
+.flex-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .avatar-rect {
     position: relative;
     overflow: hidden;
     width: 360px;
     height: 360px;
-    margin: 70px;
     background-color: transparent;
     cursor: grab;
     border-radius: 6px;
@@ -294,7 +297,6 @@
 
 .avatar-round {
     position: relative;
-    margin: 20px;
     width: 320px;
     height: 320px;
     border-radius: 50%;
