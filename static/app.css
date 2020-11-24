@@ -147,7 +147,8 @@
     color: rgb(102, 102, 102);
 }
 
-.input-unit {
+.label {
+    display: block;
     position: relative;
     width: var(--form-width);
     height: var(--form-height);
