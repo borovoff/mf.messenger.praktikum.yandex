@@ -3,9 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <title>Messenger</title>
-    <script src="./main.js" type="module"></script>
+    <link href="css/main.css" rel="stylesheet" type="text/css">
+    <link href="css/app.css" rel="stylesheet" type="text/css">
+    <link href="css/chats.css" rel="stylesheet" type="text/css">
+    <link href="css/messages.css" rel="stylesheet" type="text/css">
+    <link href="css/menu-button.css" rel="stylesheet" type="text/css">
+    <link href="css/search.css" rel="stylesheet" type="text/css">
+    <link href="css/chat-header.css" rel="stylesheet" type="text/css">
+    <link href="css/chat-photo-header.css" rel="stylesheet" type="text/css">
+    <link href="css/message-input.css" rel="stylesheet" type="text/css">
 </head>
 <body>
-
+<main id="main">
+    <ul id="ul">
+        <li>
+            <a onclick="onNavigate('authorization')">Authorization</a>
+        </li>
+        <li>
+            <a onclick="onNavigate('registration')">Registration</a>
+        </li>
+        <li>
+            <a onclick="onNavigate('main')">Chats and messages</a>
+        </li>
+        <li>
+            Settings
+            <ul>
+                <li>
+                    <a onclick="onNavigate('settings')">Edit profile</a>
+                </li>
+                <li>
+                    <a onclick="onNavigate('photo-picker')">Edit avatar</a>
+                </li>
+                <li>
+                    <a onclick="onNavigate('change-password')">Change password</a>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <a onclick="onNavigate('404')">404</a>
+        </li>
+        <li>
+            <a onclick="onNavigate('500')">500</a>
+        </li>
+    </ul>
+</main>
+<script src="./main.js" type="module"></script>
 </body>
 </html>

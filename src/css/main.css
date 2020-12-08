@@ -1,0 +1,31 @@
+::-webkit-scrollbar {
+    width: 6px!important;
+    height: 6px!important;
+    -webkit-appearance: none;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: rgba(0,0,0,.2);
+    border-radius: 4px;
+    -webkit-box-shadow: 0 0 1px rgba(255,255,255,.5);
+}
+
+::-webkit-scrollbar-track {
+    background: hsla(0,0%,100%,.08);
+}
+
+body {
+    margin: 0;
+    font-family: 'Helvetica', 'Arial', sans-serif;
+}
+
+.main-component {
+    margin: auto;
+    display: flex;
+    height: 100vh;
+    width: 100%;
+    max-width: 1678px;
+    background-color: rgb(230, 235, 238);
+    box-shadow: 0 0 2px 1px rgb(218, 220, 224);
+}
+

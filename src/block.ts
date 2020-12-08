@@ -1,4 +1,7 @@
-class Block {
+import {EventBus} from './event-bus'
+import {Store} from './models/store'
+
+export class Block extends HTMLElement {
     static EVENTS = {
         INIT: 'init',
         FLOW_CDM: 'flow:component-did-mount',
@@ -10,12 +13,18 @@ class Block {
     props
     eventBus
 
-    constructor(tagName = 'div', props = {}) {
+    protected context: Object
+    protected store: Store
+
+    constructor(context: Object, tagName = 'div', props = {name: 'lol'}) {
+        super()
         const eventBus = new EventBus()
         this._meta = {
             tagName,
             props
         }
+
+        this.context = this._makeContextProxy(context)
         this.props = this._makePropsProxy(props)
         this.eventBus = () => eventBus
         this._registerEvents(eventBus)
@@ -50,46 +59,76 @@ class Block {
     componentDidUpdate(oldProps, newProps) {
         return true
     }
-    setProps = nextProps => {
+
+    public setProps(nextProps) {
         if (!nextProps) {
             return
         }
         Object.assign(this.props, nextProps)
     }
+
     get element() {
         return this._element
     }
     _render() {
-        const block = this.render()
-        // Этот небезопасный метод для упрощения логики
-        // Используйте шаблонизатор из npm или напишите свой безопасный
-        // Нужно не в строку компилировать (или делать это правильно),
-        // либо сразу в DOM-элементы возвращать из compile DOM-ноду
-        this._element.innerHTML = block
+        this.render()
     }
+
     render() {}
+
     getContent() {
         return this.element
     }
     _makePropsProxy(props) {
-        // Можно и так передать this
-        // Такой способ больше не применяется с приходом ES6+
-        const self = this
         return new Proxy(props, {
-            get(target, prop) {
+            get: (target, prop) => {
                 const value = target[prop]
                 return typeof value === 'function' ? value.bind(target) : value
             },
-            set(target, prop, value) {
+            set: (target, prop, value) => {
                 target[prop] = value
-                self.eventBus().emit(Block.EVENTS.FLOW_CDU, {...target}, target)
+                this.eventBus().emit(Block.EVENTS.FLOW_CDU, {...target}, target)
                 return true
             },
-            deleteProperty() {
+            deleteProperty: () => {
                 throw new Error('Нет доступа')
             }
         })
     }
+
+    setContext(context: Object) {
+        Object.assign(this.context, context)
+    }
+
+    // @ts-ignore
+    _makeContextProxy(context: Object): Proxy {
+        return new Proxy(context, {
+            get: (target, prop) => {
+                const value = target[prop]
+                return typeof value === 'function' ? value.bind(target) : value
+            },
+            set: (target, prop: string, value) => {
+                target[prop] = value
+                const items = this.store[prop]
+
+                items.forEach(item => {
+                    const element = item.element
+
+                    if (item.element.tagName.slice(0, 4) === 'APP-') {
+                        (element as Block).setContext({[prop]: value})
+                    } else {
+                        element[item.property] = value
+                    }
+                })
+
+                return true
+            },
+            deleteProperty: () => {
+                throw new Error('Нет доступа')
+            }
+        })
+    }
+
     _createDocumentElement(tagName) {
         return document.createElement(tagName)
     }

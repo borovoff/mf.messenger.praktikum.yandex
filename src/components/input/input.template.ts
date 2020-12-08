@@ -1,10 +1,10 @@
-export const input = `
+export const inputTemplate = `
 <label class="label">
     <span class="caption">{{name}}</span>
     <input
-            name="{{name}}"
+            [name]="name"
             class="input"
             type="text"
-            placeholder="{{name}}">
+            [placeholder]="name">
 </label>
 `

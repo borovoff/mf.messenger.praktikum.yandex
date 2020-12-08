@@ -1,4 +1,4 @@
-class EventBus {
+export class EventBus {
     listeners
 
     constructor() {
