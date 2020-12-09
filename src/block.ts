@@ -16,7 +16,7 @@ export class Block extends HTMLElement {
     protected context: Object
     protected store: Store
 
-    constructor(context: Object, tagName = 'div', props = {name: 'lol'}) {
+    constructor(context: Object = {}, tagName = 'div', props = {name: 'lol'}) {
         super()
         const eventBus = new EventBus()
         this._meta = {
@@ -111,15 +111,21 @@ export class Block extends HTMLElement {
                 target[prop] = value
                 const items = this.store[prop]
 
-                items.forEach(item => {
-                    const element = item.element
+                if (items !== undefined) {
+                    items.forEach(item => {
+                        const element = item.element
 
-                    if (item.element.tagName.slice(0, 4) === 'APP-') {
-                        (element as Block).setContext({[prop]: value})
-                    } else {
-                        element[item.property] = value
-                    }
-                })
+                        if (element.tagName.slice(0, 4) === 'APP-') {
+                            (element as Block).setContext({[item.property]: value})
+                        } else {
+                            if (item.property === 'class') {
+                                element.className = value
+                            } else {
+                                element[item.property] = value
+                            }
+                        }
+                    })
+                }
 
                 return true
             },

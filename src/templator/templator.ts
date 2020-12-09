@@ -3,6 +3,10 @@ import {ComponentName} from '../models/enums/component-name'
 import {InputComponent} from '../components/input/input.component'
 import { Block } from 'src/block'
 import {PasswordInputComponent} from '../components/password-input/password-input.component'
+import {ButtonComponent} from '../components/button/button.component'
+import {ChatImageComponent} from '../components/main/chat-image/chat-image.component'
+import {ChatComponent} from '../components/main/chat/chat.component'
+import {MessageComponent} from '../components/main/message/message.component'
 
 export class Templator {
     private template: string
@@ -220,13 +224,25 @@ export class Templator {
             const componentName = tag.slice(4) as ComponentName
             switch (componentName) {
                 case ComponentName.Input:
-                    this.element = new InputComponent({})
+                    this.element = new InputComponent()
                     break
                 case ComponentName.PasswordInput:
-                    this.element = new PasswordInputComponent({})
+                    this.element = new PasswordInputComponent()
+                    break
+                case ComponentName.Button:
+                    this.element = new ButtonComponent()
+                    break
+                case ComponentName.ChatImage:
+                    this.element = new ChatImageComponent()
+                    break
+                case ComponentName.Chat:
+                    this.element = new ChatComponent()
+                    break
+                case ComponentName.Message:
+                    this.element = new MessageComponent()
                     break
                 default:
-                    break
+                    throw new Error('not known custom component')
             }
         } else {
             this.element = document.createElement(tag)

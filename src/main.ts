@@ -1,5 +1,8 @@
 import {Pathname} from './models/enums/pathname'
 import {AuthorizationComponent} from './components/authorization/authorization.component'
+import {ErrorComponent} from './components/error/error.component'
+import {RegistrationComponent} from './components/registration/registration.component'
+import {MainComponent} from './components/main/main.component'
 
 const ul = document.getElementById('ul')
 const main = document.getElementById('main')
@@ -23,8 +26,39 @@ const changePage = (pathname: Pathname | string) => {
             element = new AuthorizationComponent({name: 'Login', password: 'Password'})
             break
         case Pathname.Registration:
+            element = new RegistrationComponent({
+                firstName: 'First name',
+                secondName: 'Second name',
+                login: 'Login',
+                email: 'Email',
+                password: 'Password',
+                phone: 'Phone'
+            })
             break
         case Pathname.Main:
+            element = new MainComponent({
+                outer: {
+                    base: 'base-button',
+                    menu: 'base-button menu-button',
+                    micro: 'input-microphone'
+                },
+                inner: {
+                    search: 'base-button-img base-button-search',
+                    more: 'base-button-img base-button-more',
+                    menu: 'base-button-img base-button-menu',
+                    micro: 'input-microphone-img'
+                },
+                img: {
+                    chat: 'chat-image',
+                    header: 'chat-image chat-header-img'
+                },
+                message: {
+                    class: 'message stranger last first',
+                    text: 'Доброе утро ☀',
+                    time: '7:48',
+                    imgClass: 'hide'
+                }
+            })
             break
         case Pathname.Settings:
             break
@@ -33,8 +67,10 @@ const changePage = (pathname: Pathname | string) => {
         case Pathname.ChangePassword:
             break
         case Pathname.NotFound:
+            element = new ErrorComponent({error: Pathname.NotFound})
             break
         case Pathname.HyperError:
+            element = new ErrorComponent({error: Pathname.HyperError})
             break
         default:
             break

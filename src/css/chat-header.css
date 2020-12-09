@@ -45,6 +45,11 @@
     mask: url(../assets/more_svg.svg) no-repeat center;
 }
 
+.base-button-menu {
+    -webkit-mask: url(../assets/menu_svg.svg) no-repeat center;
+    mask: url(../assets/menu_svg.svg) no-repeat center;
+}
+
 .base-button {
     border-radius: 50%;
     width: 44px;

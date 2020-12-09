@@ -3,7 +3,7 @@ import {Block} from '../../block'
 import {passwordInputTemplate} from './password-input.template'
 
 export class PasswordInputComponent extends Block {
-    constructor(context: Object) {
+    constructor(context?: Object) {
         super(context)
     }
 
@@ -14,4 +14,4 @@ export class PasswordInputComponent extends Block {
     }
 }
 
-customElements.define('app-password-input', PasswordInputComponent);
+customElements.define('app-password-input', PasswordInputComponent)
