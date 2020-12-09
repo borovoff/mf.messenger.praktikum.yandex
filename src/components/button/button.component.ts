@@ -5,6 +5,8 @@ import {buttonTemplate} from './button.template'
 export class ButtonComponent extends Block {
     constructor(context?: Object) {
         super(context)
+
+        this.style.zIndex = '2'
     }
 
     render() {

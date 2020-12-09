@@ -3,6 +3,9 @@ import {AuthorizationComponent} from './components/authorization/authorization.c
 import {ErrorComponent} from './components/error/error.component'
 import {RegistrationComponent} from './components/registration/registration.component'
 import {MainComponent} from './components/main/main.component'
+import {SettingsComponent} from './components/settings/settings.component'
+import {PhotoPickerComponent} from './components/photo-picker/photo-picker.component'
+import {ChangePasswordComponent} from './components/change-password/change-password.component'
 
 const ul = document.getElementById('ul')
 const main = document.getElementById('main')
@@ -61,10 +64,41 @@ const changePage = (pathname: Pathname | string) => {
             })
             break
         case Pathname.Settings:
+            element = new SettingsComponent({
+                firstName: 'First name',
+                secondName: 'Second name',
+                login: 'Login',
+                email: 'Email',
+                displayName: 'Display name',
+                phone: 'Phone',
+                button: {
+                    outer: 'base-button',
+                    inner: 'base-button-img base-button-back'
+                }
+            })
             break
         case Pathname.PhotoPicker:
+            element = new PhotoPickerComponent({
+                checkButton: {
+                    outer: 'check-picker',
+                    inner: 'blue-button-img base-button-check'
+                },
+                closeButton: {
+                    outer: 'base-button close-picker',
+                    inner: 'base-button-img base-button-close'
+                }
+            })
             break
         case Pathname.ChangePassword:
+            element = new ChangePasswordComponent({
+                button: {
+                    outer: 'base-button',
+                    inner: 'base-button-img base-button-back'
+                },
+                oldPassword: 'Old password',
+                newPassword: 'New password',
+                repeatPassword: 'Repeat password'
+            })
             break
         case Pathname.NotFound:
             element = new ErrorComponent({error: Pathname.NotFound})

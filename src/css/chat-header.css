@@ -35,6 +35,12 @@
     height: 20px;
 }
 
+.blue-button-img {
+    background-color: white;
+    width: 26px;
+    height: 26px;
+}
+
 .base-button-search {
     -webkit-mask: url(../assets/search_svg.svg) no-repeat center;
     mask: url(../assets/search_svg.svg) no-repeat center;
@@ -48,6 +54,21 @@
 .base-button-menu {
     -webkit-mask: url(../assets/menu_svg.svg) no-repeat center;
     mask: url(../assets/menu_svg.svg) no-repeat center;
+}
+
+.base-button-back {
+    -webkit-mask: url(../assets/back_svg.svg) no-repeat center;
+    mask: url(../assets/back_svg.svg) no-repeat center;
+}
+
+.base-button-check {
+    -webkit-mask: url(../assets/check_svg.svg) no-repeat center;
+    mask: url(../assets/check_svg.svg) no-repeat center;
+}
+
+.base-button-close {
+    -webkit-mask: url(../assets/close_svg.svg) no-repeat center;
+    mask: url(../assets/close_svg.svg) no-repeat center;
 }
 
 .base-button {

@@ -296,6 +296,10 @@
     transform-origin: left top;
 }
 
+.send-message-button {
+    z-index: 2;
+}
+
 .avatar-round {
     position: relative;
     width: 320px;
@@ -307,8 +311,8 @@
 .close-picker {
     cursor: pointer;
     position: absolute;
-    left: 20px;
-    top: 20px;
+    left: 10px;
+    top: 10px;
 }
 
 .check-picker {
@@ -322,6 +326,7 @@
     height: 56px;
     border-radius: 50%;
     box-shadow: 0 1px 2px rgb(209, 212, 215);
+    padding: 14px;
 }
 
 .picker-caption {
