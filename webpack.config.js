@@ -1,5 +1,6 @@
-const path = require('path');
-const CopyPlugin = require('copy-webpack-plugin');
+const path = require('path')
+const CopyPlugin = require('copy-webpack-plugin')
+const dist = path.resolve(__dirname, 'dist')
 
 module.exports = {
     entry: './src/main.ts',
@@ -17,12 +18,12 @@ module.exports = {
     },
     output: {
         filename: 'main.js',
-        path: path.resolve(__dirname, 'dist'),
+        path: dist,
     },
     devServer: {
-        contentBase: './dist',
+        contentBase: dist,
     },
-    devtool: "inline-source-map",
+    devtool: 'inline-source-map',
     plugins: [
         new CopyPlugin([
             { from: './src/assets', to: 'assets' },
@@ -30,4 +31,4 @@ module.exports = {
             { from: './src/index.html' }
         ])
     ]
-};
+}
