@@ -4,7 +4,7 @@
 
 ### Запуск
 ```
-npm i & npm run webpack
+npm i && npm run webpack
 ```
 
 ### Почему используется Webpack
