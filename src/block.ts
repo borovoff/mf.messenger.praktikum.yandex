@@ -1,6 +1,11 @@
 import {EventBus} from './event-bus'
 import {Store} from './models/store'
 
+interface Meta {
+    tagName: string
+    props: any
+}
+
 export class Block extends HTMLElement {
     static EVENTS = {
         INIT: 'init',
@@ -8,10 +13,10 @@ export class Block extends HTMLElement {
         FLOW_CDU: 'flow:component-did-update',
         FLOW_RENDER: 'flow:render'
     }
-    _element = null
-    _meta = null
-    props
-    eventBus
+    _element: HTMLElement
+    _meta: Meta
+    props: any
+    eventBus: () => EventBus
 
     protected context: Object
     protected store: Store
@@ -30,7 +35,7 @@ export class Block extends HTMLElement {
         this._registerEvents(eventBus)
         eventBus.emit(Block.EVENTS.INIT)
     }
-    _registerEvents(eventBus) {
+    _registerEvents(eventBus: EventBus) {
         eventBus.on(Block.EVENTS.INIT, this.init.bind(this))
         eventBus.on(Block.EVENTS.FLOW_CDM, this._componentDidMount.bind(this))
         eventBus.on(Block.EVENTS.FLOW_CDU, this._componentDidUpdate.bind(this))
@@ -49,25 +54,28 @@ export class Block extends HTMLElement {
         this.eventBus().emit(Block.EVENTS.FLOW_RENDER)
     }
     componentDidMount() {}
-    _componentDidUpdate(oldProps, newProps) {
-        const response = this.componentDidUpdate(oldProps, newProps)
+
+    _componentDidUpdate() {
+        const response = this.componentDidUpdate()
         if (!response) {
             return
         }
         this._render()
     }
-    componentDidUpdate(oldProps, newProps) {
+
+    componentDidUpdate() {
         return true
     }
 
-    public setProps(nextProps) {
+    public setProps(nextProps: any) {
         if (!nextProps) {
             return
         }
+
         Object.assign(this.props, nextProps)
     }
 
-    get element() {
+    get element(): HTMLElement {
         return this._element
     }
     _render() {
@@ -79,7 +87,8 @@ export class Block extends HTMLElement {
     getContent() {
         return this.element
     }
-    _makePropsProxy(props) {
+
+    _makePropsProxy(props: any) {
         return new Proxy(props, {
             get: (target, prop) => {
                 const value = target[prop]
@@ -103,7 +112,7 @@ export class Block extends HTMLElement {
     // @ts-ignore
     _makeContextProxy(context: Object): Proxy {
         return new Proxy(context, {
-            get: (target, prop) => {
+            get: (target: any, prop: string) => {
                 const value = target[prop]
                 return typeof value === 'function' ? value.bind(target) : value
             },
@@ -118,10 +127,23 @@ export class Block extends HTMLElement {
                         if (element.tagName.slice(0, 4) === 'APP-') {
                             (element as Block).setContext({[item.property]: value})
                         } else {
-                            if (item.property === 'class') {
-                                element.className = value
-                            } else {
-                                element[item.property] = value
+                            switch (item.property) {
+                                case 'class':
+                                    element.className = value
+                                    break
+                                case 'textContent':
+                                    element.textContent = value
+                                    break
+                                case 'submit':
+                                case 'blur':
+                                case 'focus':
+                                    // @ts-ignore
+                                    const fn = value as (event: Event) => any
+                                    element.addEventListener(item.property, fn)
+                                    break
+                                default:
+                                    element.setAttribute(item.property, value)
+                                    break
                             }
                         }
                     })
@@ -135,12 +157,14 @@ export class Block extends HTMLElement {
         })
     }
 
-    _createDocumentElement(tagName) {
+    _createDocumentElement(tagName: string) {
         return document.createElement(tagName)
     }
+
     show() {
         this.getContent().style.display = 'block'
     }
+
     hide() {
         this.getContent().style.display = 'none'
     }

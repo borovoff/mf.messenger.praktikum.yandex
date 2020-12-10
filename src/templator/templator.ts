@@ -11,7 +11,7 @@ import {MessageComponent} from '../components/main/message/message.component'
 export class Templator {
     private template: string
     private i = 0
-    private readonly context: Object
+    private readonly context: any
     private element: HTMLElement
     private parent: HTMLElement
 
@@ -25,10 +25,10 @@ export class Templator {
         this.context = context
     }
 
-    get(path: string, defaultValue?) {
+    get(path: string, defaultValue?: string) {
         const keys = path.split('.')
 
-        let result = this.context;
+        let result = this.context
         for (let key of keys) {
             result = result[key]
 
@@ -113,13 +113,20 @@ export class Templator {
                 if (key.charAt(0) === '[' && key.charAt(key.length - 1) === ']') {
                     key = key.slice(1, key.length - 1)
                     this.addToStore(value, key)
-                    value = this.get(value)
+                    value = this.get(value) as any
                 }
 
+                // TODO: same logic as block proxy
                 if (this.element.tagName.slice(0, 4) === 'APP-') {
                     (this.element as Block).setContext({[key]: value})
                 } else {
-                    this.element.setAttribute(key, value)
+                    if (key === 'submit' || key === 'blur' || key === 'focus') {
+                        // @ts-ignore
+                        const fn = value as (event: Event) => any
+                        this.element.addEventListener(key, fn)
+                    } else {
+                        this.element.setAttribute(key, value)
+                    }
                 }
 
                 return
@@ -170,7 +177,7 @@ export class Templator {
             this.i++
 
             if (char === '>') {
-                this.parent = this.parent.parentElement
+                this.parent = this.parent.parentElement as HTMLElement
                 return
             }
         }

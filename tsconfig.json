@@ -19,6 +19,11 @@
           "es2018",
           "dom",
           "es2015.proxy"
-        ]
+        ],
+        "noImplicitAny": true,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "alwaysStrict": true,
+        "strictNullChecks": true
     }
 }

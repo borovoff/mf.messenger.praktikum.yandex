@@ -1,8 +1,8 @@
 import {Templator} from '../../templator/templator'
 import {registrationTemplate} from './registration.template'
-import {Block} from '../../block'
+import {FormBlock} from '../../form-block'
 
-export class RegistrationComponent extends Block {
+export class RegistrationComponent extends FormBlock {
     constructor(context: Object) {
         super(context)
     }

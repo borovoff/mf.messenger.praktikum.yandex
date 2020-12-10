@@ -7,26 +7,23 @@ import {SettingsComponent} from './components/settings/settings.component'
 import {PhotoPickerComponent} from './components/photo-picker/photo-picker.component'
 import {ChangePasswordComponent} from './components/change-password/change-password.component'
 
-const ul = document.getElementById('ul')
-const main = document.getElementById('main')
+const ul = document.getElementById('ul') as HTMLElement
+const main = document.getElementById('main') as HTMLElement
 
 const changePage = (pathname: Pathname | string) => {
     let element: HTMLElement
     ul.classList.add('hide')
 
     while (main.childElementCount > 1) {
-        main.lastChild.remove()
+        (main.lastChild as HTMLElement).remove()
     }
 
     switch (pathname) {
-        case Pathname.Index:
-        case Pathname.Slash:
-            ul.classList.remove('hide')
-            element = document.createElement('div')
-            element.textContent = 'Main'
-            break
         case Pathname.Authorization:
-            element = new AuthorizationComponent({name: 'Login', password: 'Password'})
+            element = new AuthorizationComponent({
+                name: 'Login',
+                password: 'Password'
+            })
             break
         case Pathname.Registration:
             element = new RegistrationComponent({
@@ -35,7 +32,32 @@ const changePage = (pathname: Pathname | string) => {
                 login: 'Login',
                 email: 'Email',
                 password: 'Password',
-                phone: 'Phone'
+                phone: 'Phone',
+            })
+            break
+        case Pathname.ChangePassword:
+            element = new ChangePasswordComponent({
+                button: {
+                    outer: 'base-button',
+                    inner: 'base-button-img base-button-back'
+                },
+                oldPassword: 'Old password',
+                newPassword: 'New password',
+                repeatPassword: 'Repeat password',
+            })
+            break
+        case Pathname.Settings:
+            element = new SettingsComponent({
+                firstName: 'First name',
+                secondName: 'Second name',
+                login: 'Login',
+                email: 'Email',
+                displayName: 'Display name',
+                phone: 'Phone',
+                button: {
+                    outer: 'base-button',
+                    inner: 'base-button-img base-button-back'
+                },
             })
             break
         case Pathname.Main:
@@ -63,20 +85,6 @@ const changePage = (pathname: Pathname | string) => {
                 }
             })
             break
-        case Pathname.Settings:
-            element = new SettingsComponent({
-                firstName: 'First name',
-                secondName: 'Second name',
-                login: 'Login',
-                email: 'Email',
-                displayName: 'Display name',
-                phone: 'Phone',
-                button: {
-                    outer: 'base-button',
-                    inner: 'base-button-img base-button-back'
-                }
-            })
-            break
         case Pathname.PhotoPicker:
             element = new PhotoPickerComponent({
                 checkButton: {
@@ -89,24 +97,18 @@ const changePage = (pathname: Pathname | string) => {
                 }
             })
             break
-        case Pathname.ChangePassword:
-            element = new ChangePasswordComponent({
-                button: {
-                    outer: 'base-button',
-                    inner: 'base-button-img base-button-back'
-                },
-                oldPassword: 'Old password',
-                newPassword: 'New password',
-                repeatPassword: 'Repeat password'
-            })
-            break
         case Pathname.NotFound:
             element = new ErrorComponent({error: Pathname.NotFound})
             break
         case Pathname.HyperError:
             element = new ErrorComponent({error: Pathname.HyperError})
             break
+        case Pathname.Index:
+        case Pathname.Slash:
         default:
+            ul.classList.remove('hide')
+            element = document.createElement('div')
+            element.textContent = 'Main'
             break
     }
 
@@ -116,20 +118,19 @@ const changePage = (pathname: Pathname | string) => {
 const loadPage = () => {
     const tokens = location.pathname.split('/')
     const t = tokens[tokens.length - 1]
-    console.log(t)
     changePage(t)
 }
 
 loadPage()
 
 
-const onNavigate = (pathname) => {
-    // console.log(pathname)
-    // history.pushState(
-    //     {},
-    //     pathname,
-    //     pathname ? pathname : '/'
-    // )
+const onNavigate = (pathname: string) => {
+    console.log(pathname)
+    history.pushState(
+        {},
+        pathname,
+        pathname ? pathname : '/'
+    )
 
     changePage(pathname)
 }

@@ -1,8 +1,8 @@
 import {Templator} from '../../templator/templator'
-import {Block} from '../../block'
 import {passwordInputTemplate} from './password-input.template'
+import {FormBlock} from '../../form-block'
 
-export class PasswordInputComponent extends Block {
+export class PasswordInputComponent extends FormBlock {
     constructor(context?: Object) {
         super(context)
     }

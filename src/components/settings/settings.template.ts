@@ -15,7 +15,7 @@ export const settingsTemplate = `
                 src="assets/cameraadd_svg.svg">
     </div>
 
-    <form>
+    <form [submit]="submit">
         <app-input [name]="firstName"></app-input>
         <app-input [name]="secondName"></app-input>
         <app-input [name]="displayName"></app-input>

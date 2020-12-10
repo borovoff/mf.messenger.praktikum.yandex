@@ -2,7 +2,7 @@ export const registrationTemplate = `
 <div class="login-column">
     <h1>Registration</h1>
 
-    <form>
+    <form [submit]="submit">
         <app-input [name]="firstName"></app-input>
         <app-input [name]="secondName"></app-input>
         <app-input [name]="login"></app-input>

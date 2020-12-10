@@ -1,8 +1,8 @@
 import {Templator} from '../../templator/templator'
 import {authorizationTemplate} from './authorization.template'
-import {Block} from '../../block'
+import {FormBlock} from '../../form-block'
 
-export class AuthorizationComponent extends Block {
+export class AuthorizationComponent extends FormBlock {
     constructor(context: Object) {
         super(context)
     }

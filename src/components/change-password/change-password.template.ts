@@ -7,7 +7,7 @@ export const changePasswordTemplate = `
         <h3>Change password</h3>
     </div>
 
-    <form>
+    <form [submit]="submit">
         <app-password-input [name]="oldPassword"></app-password-input>
         <app-password-input [name]="newPassword"></app-password-input>
         <app-password-input [name]="repeatPassword"></app-password-input>

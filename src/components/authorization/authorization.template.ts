@@ -2,10 +2,12 @@ export const authorizationTemplate = `
 <div class="login-column">
     <h1>Authorization</h1>
 
-    <form>
-        <app-input [name]="name"></app-input>
+    <form [submit]="submit">
+        <app-input
+            [name]="name"></app-input>
 
-        <app-password-input [name]="password"></app-password-input>
+        <app-password-input
+            [name]="password"></app-password-input>
 
         <input
                 class="next"
