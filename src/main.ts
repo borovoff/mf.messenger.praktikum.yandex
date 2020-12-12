@@ -129,12 +129,12 @@ loadPage()
 
 
 const onNavigate = (pathname: string) => {
-    // console.log(pathname)
-    // history.pushState(
-    //     {},
-    //     pathname,
-    //     pathname ? pathname : '/'
-    // )
+    console.log(pathname)
+    history.pushState(
+        {},
+        pathname,
+        pathname ? pathname : '/'
+    )
 
     changePage(pathname)
 }
