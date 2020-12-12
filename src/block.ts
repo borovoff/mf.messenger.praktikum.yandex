@@ -3,7 +3,6 @@ import {Store} from './models/store'
 
 interface Meta {
     tagName: string
-    props: any
 }
 
 export class Block extends HTMLElement {
@@ -15,22 +14,19 @@ export class Block extends HTMLElement {
     }
     _element: HTMLElement
     _meta: Meta
-    props: any
     eventBus: () => EventBus
 
     protected context: Object
     protected store: Store
 
-    constructor(context: Object = {}, tagName = 'div', props = {name: 'lol'}) {
+    constructor(context: Object = {}, tagName = 'div') {
         super()
         const eventBus = new EventBus()
         this._meta = {
-            tagName,
-            props
+            tagName
         }
 
         this.context = this._makeContextProxy(context)
-        this.props = this._makePropsProxy(props)
         this.eventBus = () => eventBus
         this._registerEvents(eventBus)
         eventBus.emit(Block.EVENTS.INIT)
@@ -67,14 +63,6 @@ export class Block extends HTMLElement {
         return true
     }
 
-    public setProps(nextProps: any) {
-        if (!nextProps) {
-            return
-        }
-
-        Object.assign(this.props, nextProps)
-    }
-
     get element(): HTMLElement {
         return this._element
     }
@@ -86,23 +74,6 @@ export class Block extends HTMLElement {
 
     getContent() {
         return this.element
-    }
-
-    _makePropsProxy(props: any) {
-        return new Proxy(props, {
-            get: (target, prop) => {
-                const value = target[prop]
-                return typeof value === 'function' ? value.bind(target) : value
-            },
-            set: (target, prop, value) => {
-                target[prop] = value
-                this.eventBus().emit(Block.EVENTS.FLOW_CDU, {...target}, target)
-                return true
-            },
-            deleteProperty: () => {
-                throw new Error('Нет доступа')
-            }
-        })
     }
 
     setContext(context: Object) {
@@ -129,7 +100,14 @@ export class Block extends HTMLElement {
                         } else {
                             switch (item.property) {
                                 case 'class':
-                                    element.className = value
+                                    const arrayStore = item.arrayStore
+                                    if (arrayStore) {
+                                        arrayStore.tokens[arrayStore.index] = value
+                                        const s = arrayStore.tokens.join(' ')
+                                        element.className = s
+                                    } else {
+                                        element.className = value
+                                    }
                                     break
                                 case 'textContent':
                                     element.textContent = value

@@ -1,14 +1,14 @@
 import {Templator} from '../../templator/templator'
 import {Block} from '../../block'
-import {buttonTemplate} from './button.template'
+import {photoPickerTemplate} from './photo-picker.template'
 
-export class ButtonComponent extends Block {
+export class PhotoPickerComponent extends Block {
     constructor(context?: Object) {
         super(context)
     }
 
     render() {
-        const templator = new Templator(buttonTemplate, this, this.context)
+        const templator = new Templator(photoPickerTemplate, this, this.context)
         templator.newReplace()
         this.store = templator.store
     }

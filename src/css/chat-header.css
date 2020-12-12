@@ -85,3 +85,33 @@
 .base-button:hover {
     background-color: rgb(244, 244, 245);
 }
+
+.check-picker {
+    cursor: pointer;
+    position: absolute;
+    right: 20px;
+    bottom: 20px;
+    background-color: var(--form-color);
+    border: none;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    box-shadow: 0 1px 2px rgb(209, 212, 215);
+    padding: 14px;
+}
+
+.input-microphone {
+    height: 54px;
+    width: 54px;
+    margin: 0 8px;
+    padding: 14px;
+    border-radius: 50%;
+    border: none;
+    background-color: var(--form-color);
+    z-index: 3;
+    cursor: pointer;
+}
+
+.check-picker:hover, .input-microphone:hover {
+    background-color: var(--form-color);
+}

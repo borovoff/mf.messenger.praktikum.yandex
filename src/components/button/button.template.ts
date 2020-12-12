@@ -1,5 +1,6 @@
 export const buttonTemplate = `
-<button [class]="outer">
-    <div [class]="inner"></div>
-</button>
+<input
+    class="next"
+    [value]="value"
+    type="submit">
 `

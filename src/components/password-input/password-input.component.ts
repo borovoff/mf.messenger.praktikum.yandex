@@ -13,5 +13,3 @@ export class PasswordInputComponent extends FormBlock {
         this.store = templator.store
     }
 }
-
-customElements.define('app-password-input', PasswordInputComponent)

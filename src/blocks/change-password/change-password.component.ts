@@ -1,14 +1,14 @@
 import {Templator} from '../../templator/templator'
-import {inputTemplate} from './input.template'
+import {changePasswordTemplate} from './change-password.template'
 import {FormBlock} from '../../form-block'
 
-export class InputComponent extends FormBlock {
+export class ChangePasswordComponent extends FormBlock {
     constructor(context?: Object) {
         super(context)
     }
 
     render() {
-        const templator = new Templator(inputTemplate, this, this.context)
+        const templator = new Templator(changePasswordTemplate, this, this.context)
         templator.newReplace()
         this.store = templator.store
     }

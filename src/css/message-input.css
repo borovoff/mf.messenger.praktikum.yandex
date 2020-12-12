@@ -23,18 +23,6 @@
     cursor: pointer;
 }
 
-.input-microphone {
-    height: 54px;
-    width: 54px;
-    margin: 0 8px;
-    padding: 14px;
-    border-radius: 50%;
-    border: none;
-    background-color: rgb(83, 166, 243);
-    z-index: 3;
-    cursor: pointer;
-}
-
 .input-microphone-img {
     background-color: white;
     width: 26px;

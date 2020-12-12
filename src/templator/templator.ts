@@ -1,12 +1,11 @@
 import {Store} from '../models/store'
-import {ComponentName} from '../models/enums/component-name'
-import {InputComponent} from '../components/input/input.component'
-import { Block } from 'src/block'
-import {PasswordInputComponent} from '../components/password-input/password-input.component'
-import {ButtonComponent} from '../components/button/button.component'
-import {ChatImageComponent} from '../components/main/chat-image/chat-image.component'
-import {ChatComponent} from '../components/main/chat/chat.component'
-import {MessageComponent} from '../components/main/message/message.component'
+import {Block} from 'src/block'
+import {ArrayStore} from '../models/array-store'
+
+interface StoreResult {
+    value: string
+    arrayStore?: ArrayStore
+}
 
 export class Templator {
     private template: string
@@ -48,10 +47,10 @@ export class Templator {
             this.i++
             switch (char) {
                 case '<':
-                    if (next !== '/') {
-                        this.insideOpenTag()
-                    } else {
+                    if (next === '/') {
                         this.insideCloseTag()
+                    } else {
+                        this.insideOpenTag()
                     }
                     break
                 case ' ':
@@ -59,11 +58,17 @@ export class Templator {
                 case '{':
                     if (next === '{') {
                         this.i++
-                        const value = this.getReactValue()
                         const key = 'textContent'
-                        this.element[key] = this.get(value)
+                        const value = this.getReactValue()
+                        const result = this.addToStore(value, key)
 
-                        this.addToStore(value, key)
+                        const arrayStore = result.arrayStore
+                        if (arrayStore === undefined) {
+                            this.element[key] = this.get(result.value)
+                        } else {
+                            arrayStore.tokens[arrayStore.index] = this.get(result.value)
+                            this.element[key] = arrayStore.tokens.join(' ')
+                        }
 
                         this.i += 2
                     }
@@ -75,12 +80,32 @@ export class Templator {
         }
     }
 
-    addToStore(value: string, key: string) {
+    addToStore(value: string, key: string): StoreResult {
+        let arrayStore: ArrayStore
+
+        if (value.includes('+')) {
+            let tokens = value.split('+')
+            const index = tokens.findIndex(element => !element.includes('\''))
+
+            tokens = tokens.map(token => token.trim().replace(/'/g, ''))
+
+            if (index > -1) {
+                arrayStore = {tokens, index}
+                value = tokens[index]
+            } else {
+                throw new Error('not found variable')
+            }
+        }
+
         if (this._store[value] === undefined) {
             this._store[value] = []
         }
 
-        this._store[value].push({property: key, element: this.element})
+        // @ts-ignore
+        this._store[value].push({property: key, element: this.element, arrayStore})
+
+        // @ts-ignore
+        return {value, arrayStore}
     }
 
     textContent() {
@@ -110,10 +135,17 @@ export class Templator {
                 let key = this.template.slice(start, this.i)
                 this.i += 2
                 let value = this.getValue()
-                if (key.charAt(0) === '[' && key.charAt(key.length - 1) === ']') {
+
+                const first = key.charAt(0)
+                const last = key.charAt(key.length - 1)
+
+                // TODO: rewrite
+                let result: StoreResult
+                if (first === '[' && last === ']') {
                     key = key.slice(1, key.length - 1)
-                    this.addToStore(value, key)
-                    value = this.get(value) as any
+                    result = this.addToStore(value, key)
+
+                    value = this.get(value)
                 }
 
                 // TODO: same logic as block proxy
@@ -125,7 +157,14 @@ export class Templator {
                         const fn = value as (event: Event) => any
                         this.element.addEventListener(key, fn)
                     } else {
-                        this.element.setAttribute(key, value)
+                        // @ts-ignore
+                        if (result && result.arrayStore) {
+                            const arrayStore = result.arrayStore
+                            arrayStore.tokens[arrayStore.index] = this.get(result.value)
+                            this.element.setAttribute(key, arrayStore.tokens.join(' '))
+                        } else {
+                            this.element.setAttribute(key, value)
+                        }
                     }
                 }
 
@@ -228,29 +267,8 @@ export class Templator {
         const tag = this.template.slice(start, this.i)
 
         if (tag.slice(0, 4) === 'app-') {
-            const componentName = tag.slice(4) as ComponentName
-            switch (componentName) {
-                case ComponentName.Input:
-                    this.element = new InputComponent()
-                    break
-                case ComponentName.PasswordInput:
-                    this.element = new PasswordInputComponent()
-                    break
-                case ComponentName.Button:
-                    this.element = new ButtonComponent()
-                    break
-                case ComponentName.ChatImage:
-                    this.element = new ChatImageComponent()
-                    break
-                case ComponentName.Chat:
-                    this.element = new ChatComponent()
-                    break
-                case ComponentName.Message:
-                    this.element = new MessageComponent()
-                    break
-                default:
-                    throw new Error('not known custom component')
-            }
+            const constructor = customElements.get(tag)
+            this.element = new constructor()
         } else {
             this.element = document.createElement(tag)
         }

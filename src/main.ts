@@ -1,14 +1,17 @@
 import {Pathname} from './models/enums/pathname'
-import {AuthorizationComponent} from './components/authorization/authorization.component'
-import {ErrorComponent} from './components/error/error.component'
-import {RegistrationComponent} from './components/registration/registration.component'
-import {MainComponent} from './components/main/main.component'
-import {SettingsComponent} from './components/settings/settings.component'
-import {PhotoPickerComponent} from './components/photo-picker/photo-picker.component'
-import {ChangePasswordComponent} from './components/change-password/change-password.component'
+import {AuthorizationComponent} from './blocks/authorization/authorization.component'
+import {ErrorComponent} from './blocks/error/error.component'
+import {RegistrationComponent} from './blocks/registration/registration.component'
+import {MainComponent} from './blocks/main/main.component'
+import {SettingsComponent} from './blocks/settings/settings.component'
+import {PhotoPickerComponent} from './blocks/photo-picker/photo-picker.component'
+import {ChangePasswordComponent} from './blocks/change-password/change-password.component'
+import {ComponentRegistry} from './component-registry'
 
 const ul = document.getElementById('ul') as HTMLElement
 const main = document.getElementById('main') as HTMLElement
+
+new ComponentRegistry()
 
 const changePage = (pathname: Pathname | string) => {
     let element: HTMLElement
@@ -22,7 +25,8 @@ const changePage = (pathname: Pathname | string) => {
         case Pathname.Authorization:
             element = new AuthorizationComponent({
                 name: 'Login',
-                password: 'Password'
+                password: 'Password',
+                buttonValue: 'Authorization'
             })
             break
         case Pathname.Registration:
@@ -33,17 +37,18 @@ const changePage = (pathname: Pathname | string) => {
                 email: 'Email',
                 password: 'Password',
                 phone: 'Phone',
+                buttonValue: 'Registration'
             })
             break
         case Pathname.ChangePassword:
             element = new ChangePasswordComponent({
                 button: {
-                    outer: 'base-button',
-                    inner: 'base-button-img base-button-back'
+                    inner: 'base-button-back'
                 },
                 oldPassword: 'Old password',
                 newPassword: 'New password',
                 repeatPassword: 'Repeat password',
+                buttonValue: 'Change'
             })
             break
         case Pathname.Settings:
@@ -55,22 +60,21 @@ const changePage = (pathname: Pathname | string) => {
                 displayName: 'Display name',
                 phone: 'Phone',
                 button: {
-                    outer: 'base-button',
-                    inner: 'base-button-img base-button-back'
+                    inner: 'base-button-back'
                 },
+                buttonValue: 'Change'
             })
             break
         case Pathname.Main:
             element = new MainComponent({
                 outer: {
-                    base: 'base-button',
-                    menu: 'base-button menu-button',
+                    menu: 'menu-button',
                     micro: 'input-microphone'
                 },
                 inner: {
-                    search: 'base-button-img base-button-search',
-                    more: 'base-button-img base-button-more',
-                    menu: 'base-button-img base-button-menu',
+                    search: 'base-button-search',
+                    more: 'base-button-more',
+                    menu: 'base-button-menu',
                     micro: 'input-microphone-img'
                 },
                 img: {
@@ -92,8 +96,8 @@ const changePage = (pathname: Pathname | string) => {
                     inner: 'blue-button-img base-button-check'
                 },
                 closeButton: {
-                    outer: 'base-button close-picker',
-                    inner: 'base-button-img base-button-close'
+                    outer: 'close-picker',
+                    inner: 'base-button-close'
                 }
             })
             break
@@ -125,12 +129,12 @@ loadPage()
 
 
 const onNavigate = (pathname: string) => {
-    console.log(pathname)
-    history.pushState(
-        {},
-        pathname,
-        pathname ? pathname : '/'
-    )
+    // console.log(pathname)
+    // history.pushState(
+    //     {},
+    //     pathname,
+    //     pathname ? pathname : '/'
+    // )
 
     changePage(pathname)
 }
