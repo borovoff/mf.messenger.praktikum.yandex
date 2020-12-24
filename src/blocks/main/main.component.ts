@@ -1,7 +1,6 @@
 import {Templator} from '../../templator/templator'
 import {mainTemplate} from './main.template'
 import {Block} from '../../block'
-import './chat-header.sass'
 import './chat-photo-header.sass'
 import './chats.sass'
 import './menu-button.sass'

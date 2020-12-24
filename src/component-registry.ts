@@ -13,6 +13,7 @@ import {PhotoPickerComponent} from './blocks/photo-picker/photo-picker.component
 import {ErrorComponent} from './blocks/error/error.component'
 import {ButtonComponent} from './components/button/button.component'
 import {EmailInputComponent} from './components/email-input/email-input.component'
+import {ChatHeaderComponent} from './blocks/main/chat-header/chat-header.component'
 
 export class ComponentRegistry {
     constructor() {
@@ -21,6 +22,7 @@ export class ComponentRegistry {
         customElements.define('app-change-password', ChangePasswordComponent)
         customElements.define('app-settings', SettingsComponent)
         customElements.define('app-main', MainComponent)
+        customElements.define('app-chat-header', ChatHeaderComponent)
         customElements.define('app-photo-picker', PhotoPickerComponent)
         customElements.define('app-error', ErrorComponent)
         customElements.define('app-input', InputComponent)

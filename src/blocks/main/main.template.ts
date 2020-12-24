@@ -15,22 +15,10 @@ export const mainTemplate = `
         </ul>
     </div>
     <div class="right-column">
-        <div class="chat-header">
-            <app-chat-image [class]="img.header"></app-chat-image>
-
-            <div class="chat-title-column">
-                <div class="chat-header-title">Юля</div>
-                <div class="chat-online">online</div>
-            </div>
-
-            <app-icon-button
-                [outer]="outer.base"
-                [inner]="inner.search"></app-icon-button>
-            <app-icon-button
-                [outer]="outer.base"
-                [inner]="inner.more"></app-icon-button>
-
-        </div>
+        <app-chat-header
+            [search]="inner.search"
+            [more]="inner.more"
+            [imgHeader]="img.header"></app-chat-header>
 
         <div class="messages-component">
             <ul
