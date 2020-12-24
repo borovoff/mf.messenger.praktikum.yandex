@@ -1,6 +1,9 @@
 import {Templator} from '../../templator/templator'
 import {settingsTemplate} from './settings.template'
 import {FormBlock} from '../../form-block'
+import './settings.sass'
+import '../change-password/change-password.sass'
+import '../authorization/authotization.sass'
 
 export class SettingsComponent extends FormBlock {
     constructor(context?: Object) {

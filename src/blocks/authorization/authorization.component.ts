@@ -1,6 +1,7 @@
 import {Templator} from '../../templator/templator'
 import {authorizationTemplate} from './authorization.template'
 import {FormBlock} from '../../form-block'
+import './authotization.sass'
 
 export class AuthorizationComponent extends FormBlock {
     constructor(context: Object) {

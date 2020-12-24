@@ -11,6 +11,21 @@ module.exports = {
                 use: 'ts-loader',
                 exclude: /node_modules/,
             },
+            {
+                test: /\.s[ac]ss$/i,
+                use: [
+                    { loader: 'style-loader' },
+                    // [css-loader](/loaders/css-loader)
+                    {
+                        loader: 'css-loader',
+                        options: {
+                            url: false,
+                        },
+                    },
+                    // [sass-loader](/loaders/sass-loader)
+                    { loader: 'sass-loader' }
+                ],
+            },
         ],
     },
     resolve: {

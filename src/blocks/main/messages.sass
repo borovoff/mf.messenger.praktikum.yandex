@@ -1,0 +1,260 @@
+.right-column
+    position: relative
+    display: flex
+    flex-direction: column
+    width: 100%
+    font-size: 14px
+
+
+.messages-component
+    overflow-y: auto
+    height: 100%
+    scroll-behavior: smooth
+
+
+.messages
+    display: flex
+    flex-direction: column
+    width: calc(100% - 22px)
+    margin: auto
+    max-width: 696px
+
+
+.message
+    max-width: 600px
+    color: black
+    padding: 8px
+    margin: 2px
+    word-break: break-word
+    position: relative
+    box-shadow: 0 1px 2px var(--message-shadow)
+    z-index: 0
+
+
+.message-span:after
+    content: ''
+    margin-right: 10px
+
+
+.message-text
+
+
+.messages-date
+    background-color: rgb(179, 184, 187)
+    color: white
+    font-size: 12px
+    height: 24px
+    line-height: 24px
+    padding: 0 8px
+    margin: 8px
+    align-self: center
+    border-radius: 12px
+
+
+.float-container
+    float: right
+    position: relative
+    top: 6px
+    margin: 0 -8px 0 -6px
+    display: flex
+
+
+.stranger .float-container
+    margin-right: -1px
+
+
+.my .float-container
+    width: 54px
+
+
+.my .message-date
+    color: rgb(83, 173, 83)
+
+
+.stranger .message-date
+    color: rgb(160, 170, 179)
+
+
+.message-date
+    font-size: 12px
+
+.stranger
+    align-self: flex-start
+    background-color: var(--stranger-background)
+    border-radius: 6px 12px 12px 6px
+
+
+.my
+    align-self: flex-end
+    background-color: var(--my-background)
+    border-radius: 12px 6px 6px 12px
+
+
+.my.last
+    border-bottom-right-radius: 0
+
+
+.stranger.last
+    border-bottom-left-radius: 0
+
+
+.my.first
+    border-top-right-radius: 12px
+
+
+.stranger.first
+    border-top-left-radius: 12px
+
+
+.tail
+    position: absolute
+    z-index: -1
+    bottom: 0
+    height: 20px
+    width: 8px
+
+
+.my.last > .tail
+    right: -7px
+    border-radius: 0 0 1px 0 / 0 0 4px 0
+    background-color: var(--my-background)
+    box-shadow: 1px 1px 2px var(--message-shadow)
+
+
+.stranger.last > .tail
+    left: -7px
+    border-radius: 0 0 0 1px / 0 0 0 4px
+    background-color: var(--stranger-background)
+    box-shadow: -1px 1px 2px var(--message-shadow)
+
+
+@-moz-document url-prefix()
+    .stranger.last > .tail
+        box-shadow: -1px 1px 1px var(--message-shadow)
+
+
+    .my.last > .tail
+        box-shadow: 1px 1px 1px var(--message-shadow)
+
+
+.tail:before
+    content: ''
+    position: absolute
+    bottom: 0
+    width: 2px
+    height: 2px
+    border-radius: 10px
+    z-index: -1
+
+
+.stranger.last > .tail:before
+    left: 0
+    background-color: var(--stranger-background)
+
+
+.my.last > .tail:before
+    left: 6px
+    background-color: var(--my-background)
+
+
+.tail:after
+    content: ''
+    position: absolute
+    z-index: 16
+    width: 13px
+    height: 25px
+    top: -4px
+
+
+.stranger.last > .tail:after
+    right: 1px
+    border-radius: 0 0 100% 0 / 0 0 86% 0
+    background-color: var(--chat-background)
+    box-shadow: inset -1px 0 2px -1px var(--message-shadow)
+
+
+.my.last > .tail:after
+    right: -6px
+    border-radius: 0 0 0 100% / 0 0 0 86%
+    background-color: var(--chat-background)
+    box-shadow: inset 1px 0 2px -1px var(--message-shadow)
+
+
+.check-img
+
+
+.check-container
+    width: 20px
+    height: 18px
+    position: relative
+    margin-left: 6px
+
+
+.check-mark
+    display: inline-block
+    width: 0
+    height: 10px
+    transform: rotate(45deg)
+
+
+.check-mark-received
+    margin-left: 2px
+
+
+.check-mark:before,
+.check-mark:after
+    content: ""
+    position: absolute
+    background-color: white
+
+
+.check-mark:after
+    width: 1px
+    left: 0
+    bottom: 5px
+
+
+.check-mark:after
+    height: 10px
+
+
+.check-mark-animate:after
+    /*height: 0*/
+    animation: check-after 0.5s 550ms cubic-bezier(.4, .0, .23, 1) forwards
+
+
+.check-mark:before
+    height: 1px
+    left: -3px
+    top: 4px
+
+
+.check-mark:before
+    width: 4px
+
+
+.check-mark-animate:before
+    width: 0
+    animation: check-before 0.3s 250ms cubic-bezier(.4, .0, .23, 1) forwards
+
+
+.check-mark-received:before
+    display: none
+
+
+@keyframes check-before
+    from
+        width: 0
+
+    to
+        width: 4px
+
+
+@keyframes check-after
+    from
+        height: 0
+
+    to
+        height: 10px
+
+

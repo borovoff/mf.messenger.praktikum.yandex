@@ -1,6 +1,8 @@
 import {Templator} from '../../templator/templator'
 import {changePasswordTemplate} from './change-password.template'
 import {FormBlock} from '../../form-block'
+import './change-password.sass'
+import '../authorization/authotization.sass'
 
 export class ChangePasswordComponent extends FormBlock {
     constructor(context?: Object) {

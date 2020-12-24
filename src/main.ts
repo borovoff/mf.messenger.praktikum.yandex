@@ -7,6 +7,7 @@ import {SettingsComponent} from './blocks/settings/settings.component'
 import {PhotoPickerComponent} from './blocks/photo-picker/photo-picker.component'
 import {ChangePasswordComponent} from './blocks/change-password/change-password.component'
 import {ComponentRegistry} from './component-registry'
+import './app.sass'
 
 const ul = document.getElementById('ul') as HTMLElement
 const main = document.getElementById('main') as HTMLElement
@@ -130,11 +131,11 @@ loadPage()
 
 const onNavigate = (pathname: string) => {
     console.log(pathname)
-    history.pushState(
-        {},
-        pathname,
-        pathname ? pathname : '/'
-    )
+    // history.pushState(
+    //     {},
+    //     pathname,
+    //     pathname ? pathname : '/'
+    // )
 
     changePage(pathname)
 }

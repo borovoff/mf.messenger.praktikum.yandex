@@ -1,10 +1,11 @@
-export const mainTemplate = `<div class="main-component">
+export const mainTemplate = `
+<div class="main-component">
     <div class="left-column">
         <div class="control-row">
             <app-icon-button
                 [outer]="outer.menu"
                 [inner]="inner.menu"></app-icon-button>
-            <form class="label search-form">
+            <form class="search-form">
                 <img class="search-img" src="../assets/search_svg.svg">
                 <input class="search-input" placeholder="Search">
             </form>
@@ -120,7 +121,7 @@ export const mainTemplate = `<div class="main-component">
         </div>
 
         <div class="input-component">
-            <form class="label main-form my last">
+            <form class="main-form my last">
                 <img class="input-smile" src="../assets/smile_svg.svg">
                 <img class="input-attach" src="../assets/attach_svg.svg">
                 <div class="tail input-tail"></div>
