@@ -1,5 +1,5 @@
 export const chatImageTemplate = `
 <img
-        [class]="class"
-        src="../assets/photos/cat.jpg">
+    [class]="class"
+    src="../assets/photos/cat.jpg">
 `

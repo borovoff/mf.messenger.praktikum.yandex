@@ -1,15 +1,15 @@
-import {messageTemplate} from './message.template'
 import {Templator} from '../../../templator/templator'
 import {Block} from '../../../block'
-import './message.sass'
+import {controlRowTemplate} from './control-row.template'
+import './control-row.sass'
 
-export class MessageComponent extends Block {
+export class ControlRowComponent extends Block {
     constructor(context?: Object) {
         super(context)
     }
 
     render() {
-        const templator = new Templator(messageTemplate, this, this.context)
+        const templator = new Templator(controlRowTemplate, this, this.context)
         templator.newReplace()
         this.store = templator.store
     }

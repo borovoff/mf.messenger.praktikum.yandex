@@ -1,15 +1,10 @@
 export const mainTemplate = `
 <div class="main-component">
     <div class="left-column">
-        <div class="control-row">
-            <app-icon-button
-                [outer]="outer.menu"
-                [inner]="inner.menu"></app-icon-button>
-            <form class="search-form">
-                <img class="search-img" src="../assets/search_svg.svg">
-                <input class="search-input" placeholder="Search">
-            </form>
-        </div>
+        <app-control-row
+            [innerMenu]="inner.menu"
+            [outerMenu]="outer.menu"></app-control-row>
+
         <ul class="ul chats">
             <app-chat [imgClass]="img.chat"></app-chat>
         </ul>
@@ -108,18 +103,9 @@ export const mainTemplate = `
             </ul>
         </div>
 
-        <div class="input-component">
-            <form class="main-form my last">
-                <img class="input-smile" src="../assets/smile_svg.svg">
-                <img class="input-attach" src="../assets/attach_svg.svg">
-                <div class="tail input-tail"></div>
-                <input class="main-input" placeholder="Message" type="text">
-            </form>
-
-            <app-icon-button
-                [outer]="outer.micro"
-                [inner]="inner.micro"></app-icon-button>
-        </div>
+        <app-message-input
+            [innerMicro]="inner.micro"
+            [outerMicro]="outer.micro"></app-message-input>
     </div>
 </div>
 `

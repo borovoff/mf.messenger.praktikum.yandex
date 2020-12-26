@@ -6,6 +6,8 @@ import './icon-button.sass'
 export class IconButtonComponent extends Block {
     constructor(context?: Object) {
         super(context)
+
+        this.style.zIndex = '2'
     }
 
     render() {

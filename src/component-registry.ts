@@ -14,6 +14,8 @@ import {ErrorComponent} from './blocks/error/error.component'
 import {ButtonComponent} from './components/button/button.component'
 import {EmailInputComponent} from './components/email-input/email-input.component'
 import {ChatHeaderComponent} from './blocks/main/chat-header/chat-header.component'
+import {MessageInputComponent} from './blocks/main/message-input/message-input.component'
+import {ControlRowComponent} from './blocks/main/control-row/control-row.component'
 
 export class ComponentRegistry {
     constructor() {
@@ -23,6 +25,9 @@ export class ComponentRegistry {
         customElements.define('app-settings', SettingsComponent)
         customElements.define('app-main', MainComponent)
         customElements.define('app-chat-header', ChatHeaderComponent)
+        customElements.define('app-message-input', MessageInputComponent)
+        customElements.define('app-control-row', ControlRowComponent)
+
         customElements.define('app-photo-picker', PhotoPickerComponent)
         customElements.define('app-error', ErrorComponent)
         customElements.define('app-input', InputComponent)
