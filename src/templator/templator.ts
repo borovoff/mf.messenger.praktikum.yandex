@@ -7,6 +7,20 @@ interface StoreResult {
     arrayStore?: ArrayStore
 }
 
+type ElementProperties = {
+    [key: string]: string
+}
+
+interface ElementStore {
+    tag: string
+    elementProperties: ElementProperties
+}
+
+interface ForStore {
+    element: HTMLElement
+    elementProperties: ElementProperties
+}
+
 export class Templator {
     private template: string
     private i = 0
@@ -16,6 +30,8 @@ export class Templator {
 
     private _store: Store = {}
 
+    private elementStore: ElementStore = {tag: '', elementProperties: {}}
+
     constructor(template: string, parent: HTMLElement, context: Object) {
         this.template = template
             .replace(/(\r\n|\n|\r)/gm, '')
@@ -24,10 +40,10 @@ export class Templator {
         this.context = context
     }
 
-    get(path: string, defaultValue?: string) {
+    get(path: string, defaultValue?: string, context = this.context) {
         const keys = path.split('.')
 
-        let result = this.context
+        let result = context
         for (let key of keys) {
             result = result[key]
 
@@ -80,7 +96,7 @@ export class Templator {
         }
     }
 
-    addToStore(value: string, key: string): StoreResult {
+    addToStore(value: string, key: string, element = this.element): StoreResult {
         let arrayStore: ArrayStore
 
         if (value.includes('+')) {
@@ -102,7 +118,7 @@ export class Templator {
         }
 
         // @ts-ignore
-        this._store[value].push({property: key, element: this.element, arrayStore})
+        this._store[value].push({property: key, element: element, arrayStore})
 
         // @ts-ignore
         return {value, arrayStore}
@@ -134,45 +150,96 @@ export class Templator {
             if (char === '=' && next === '"') {
                 let key = this.template.slice(start, this.i)
                 this.i += 2
-                let value = this.getValue()
-
-                const first = key.charAt(0)
-                const last = key.charAt(key.length - 1)
-
-                // TODO: rewrite
-                let result: StoreResult
-                if (first === '[' && last === ']') {
-                    key = key.slice(1, key.length - 1)
-                    result = this.addToStore(value, key)
-
-                    value = this.get(value)
-                }
-
-                // TODO: same logic as block proxy
-                if (this.element.tagName.slice(0, 4) === 'APP-') {
-                    (this.element as Block).setContext({[key]: value})
-                } else {
-                    if (key === 'submit' || key === 'blur' || key === 'focus') {
-                        // @ts-ignore
-                        const fn = value as (event: Event) => any
-                        this.element.addEventListener(key, fn)
-                    } else {
-                        // @ts-ignore
-                        if (result && result.arrayStore) {
-                            const arrayStore = result.arrayStore
-                            arrayStore.tokens[arrayStore.index] = this.get(result.value)
-                            this.element.setAttribute(key, arrayStore.tokens.join(' '))
-                        } else {
-                            this.element.setAttribute(key, value)
-                        }
-                    }
-                }
+                this.elementStore.elementProperties[key] = this.getValue()
 
                 return
             }
 
             this.i++
         }
+    }
+
+    setAttr(itemName?: string): ForStore {
+        const element = this.addTag(this.elementStore.tag)
+        const elementProperties: ElementProperties = {}
+
+        for (let [key, value] of Object.entries(this.elementStore.elementProperties)) {
+            const first = key.charAt(0)
+            const last = key.charAt(key.length - 1)
+
+            // TODO: rewrite
+            let result: StoreResult
+            if (first === '[' && last === ']') {
+                key = key.slice(1, key.length - 1)
+
+                if (itemName !== undefined && value.startsWith(itemName)) {
+                    elementProperties[key] = value
+                    continue
+                }
+
+                result = this.addToStore(value, key, element)
+                value = this.get(value)
+            }
+
+            // TODO: same logic as block proxy
+            if (element.tagName.slice(0, 4) === 'APP-') {
+                (element as Block).setContext({[key]: value})
+            } else {
+                if (key === 'submit' || key === 'blur' || key === 'focus') {
+                    // @ts-ignore
+                    const fn = value as (event: Event) => any
+                    element.addEventListener(key, fn)
+                } else {
+                    // @ts-ignore
+                    if (result && result.arrayStore) {
+                        const arrayStore = result.arrayStore
+                        arrayStore.tokens[arrayStore.index] = this.get(result.value)
+                        element.setAttribute(key, arrayStore.tokens.join(' '))
+                    } else {
+                        element.setAttribute(key, value)
+                    }
+                }
+            }
+        }
+
+        return {element, elementProperties}
+    }
+
+    setAttributes() {
+        // TODO: add nested elements in for and if not custom element
+        const properties = this.elementStore.elementProperties
+
+        if (properties.hasOwnProperty('*for')) {
+            const array = properties['*for'].split(' of ')
+            const [itemName, itemsName] = array
+
+            const {element, elementProperties} = this.setAttr(itemName)
+
+            const values = this.get(itemsName)
+
+            values.forEach((value: any) => {
+                const newElement = element.cloneNode(false) as Block
+
+                for (const [key, propertyValue] of Object.entries(elementProperties)) {
+                    const path = propertyValue.slice(itemName.length + 1)
+                    const val = this.get(path, undefined, value)
+                    if (key === 'class') {
+                        newElement.className = val
+                    } else {
+                        newElement.setContext({[key]: val})
+                    }
+                }
+
+                this.parent.appendChild(newElement)
+                this.element = newElement
+            })
+        } else {
+            const {element} = this.setAttr()
+            this.element = element
+            this.parent.appendChild(element)
+        }
+
+        this.elementStore.elementProperties = {}
     }
 
     getValue(): string {
@@ -236,8 +303,10 @@ export class Templator {
                 case '>':
                     if (first) {
                         first = false
-                        this.addTag(start)
+                        this.setTag(start)
                     }
+
+                    this.setAttributes()
 
                     const tagName = this.element.tagName
                     if (tagName !== 'INPUT' && tagName !== 'IMG') {
@@ -249,7 +318,7 @@ export class Templator {
                 case ' ':
                     if (first) {
                         first = false
-                        this.addTag(start)
+                        this.setTag(start)
                     } else {
                         this.attribute()
                     }
@@ -263,17 +332,17 @@ export class Templator {
         throw new Error('not found close >')
     }
 
-    addTag(start: number) {
-        const tag = this.template.slice(start, this.i)
+    setTag(start: number) {
+        this.elementStore.tag = this.template.slice(start, this.i)
+    }
 
+    addTag(tag: string): HTMLElement {
         if (tag.slice(0, 4) === 'app-') {
             const constructor = customElements.get(tag)
-            this.element = new constructor()
+            return new constructor()
         } else {
-            this.element = document.createElement(tag)
+            return document.createElement(tag)
         }
-
-        this.parent.appendChild(this.element)
     }
 
     get store(): Store {
