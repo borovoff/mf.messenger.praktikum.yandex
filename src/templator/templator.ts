@@ -1,15 +1,14 @@
 import {Store} from '../models/store'
 import {Block} from 'src/block'
 import {ArrayStore} from '../models/array-store'
+import {ElementProperties} from '../models/types/element-properties'
 
 interface StoreResult {
     value: string
     arrayStore?: ArrayStore
 }
 
-type ElementProperties = {
-    [key: string]: string
-}
+
 
 interface ElementStore {
     tag: string
@@ -185,7 +184,7 @@ export class Templator {
             if (element.tagName.slice(0, 4) === 'APP-') {
                 (element as Block).setContext({[key]: value})
             } else {
-                if (key === 'submit' || key === 'blur' || key === 'focus') {
+                if (key === 'submit' || key === 'blur' || key === 'focus' || key === 'click') {
                     // @ts-ignore
                     const fn = value as (event: Event) => any
                     element.addEventListener(key, fn)

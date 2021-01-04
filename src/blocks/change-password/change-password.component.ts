@@ -5,7 +5,15 @@ import './change-password.sass'
 import '../authorization/authotization.sass'
 
 export class ChangePasswordComponent extends FormBlock {
-    constructor(context?: Object) {
+    constructor(context: Object = {
+        button: {
+            inner: 'base-button-back'
+        },
+        oldPassword: 'Old password',
+        newPassword: 'New password',
+        repeatPassword: 'Repeat password',
+        buttonValue: 'Change'
+    }) {
         super(context)
     }
 

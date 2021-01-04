@@ -1,18 +1,19 @@
-// @ts-nocheck
+import {render} from './render'
+import {Block} from '../block'
 
 export class Route {
-    _pathname
-    _blockClass
-    _block = null
-    _props
+    _pathname: string
+    _blockClass: typeof Block
+    _block: Block
+    _rootQuery: string
 
-    constructor(pathname, view, props) {
+    constructor(pathname: string, view: typeof Block, rootQuery: string) {
         this._pathname = pathname
         this._blockClass = view
-        this._props = props
+        this._rootQuery = rootQuery
     }
 
-    navigate(pathname) {
+    navigate(pathname: string) {
         if (this.match(pathname)) {
             this._pathname = pathname
             this.render()
@@ -25,16 +26,15 @@ export class Route {
         }
     }
 
-    match(pathname) {
+    match(pathname: string) {
         return pathname === this._pathname
     }
 
     render() {
         if (!this._block) {
             this._block = new this._blockClass()
+            render(this._rootQuery, this._block)
 
-            // TODO: add render
-            render(this._props.rootQuery, this._block)
             return
         }
 

@@ -115,6 +115,7 @@ export class Block extends HTMLElement {
                                 case 'submit':
                                 case 'blur':
                                 case 'focus':
+                                case 'click':
                                     // @ts-ignore
                                     const fn = value as (event: Event) => any
                                     element.addEventListener(item.property, fn)

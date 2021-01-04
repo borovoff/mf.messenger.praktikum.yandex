@@ -1,14 +1,15 @@
-// @ts-nocheck
-
 import {Route} from './route'
+import {Block} from '../block'
 
 export class Router {
-    routes = []
+    routes: Route[] = []
     history = window.history
-    _currentRoute = null
-    _rootQuery
+    _currentRoute?: Route
+    _rootQuery: string
 
-    constructor(rootQuery) {
+    static __instance: Router
+
+    constructor(rootQuery: string) {
         if (Router.__instance) {
             return Router.__instance
         }
@@ -18,32 +19,39 @@ export class Router {
         Router.__instance = this
     }
 
-    use(pathname, block) {
-        const route = new Route(pathname, block, {rootQuery: this._rootQuery})
+    use(pathname: string, block: typeof Block): Router {
+        const route = new Route(pathname, block, this._rootQuery)
         this.routes.push(route)
+
+        return this
     }
 
     start() {
-        window.onpopstate = event => {
+        window.onpopstate = (event: PopStateEvent) => {
+            // @ts-ignore
             this._onRoute(event.currentTarget.location.pathname)
         }
 
         this._onRoute(window.location.pathname)
     }
 
-    _onRoute(pathname) {
+    _onRoute(pathname: string) {
         const route = this.getRoute(pathname)
 
-        if (!route) {
+        if (route === undefined) {
+            throw new Error('Route not found')
+        }
+
+        if (this._currentRoute) {
             this._currentRoute.leave()
         }
 
         this._currentRoute = route
-        route.render(route, pathname)
+        route.render()
     }
 
-    go(pathname) {
-        this.history.pushState({}, "", pathname)
+    go(pathname: string) {
+        this.history.pushState({}, '', pathname)
         this._onRoute(pathname)
     }
 
@@ -55,7 +63,9 @@ export class Router {
         this.history.forward()
     }
 
-    getRoute(pathname) {
+    getRoute(pathname: string) {
         return this.routes.find(route => route.match(pathname))
     }
 }
+
+

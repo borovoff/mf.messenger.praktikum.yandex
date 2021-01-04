@@ -1,5 +1,8 @@
 import {Block} from './block'
 import {InputType} from './models/enums/input-type'
+import {CustomNullable} from './models/types/custom-nullable'
+import {ElementProperties} from './models/types/element-properties'
+import {nameToKey} from './helpers/name-to-key'
 
 type NullableString = string | null
 
@@ -26,11 +29,11 @@ export class FormBlock extends Block {
         return value ? null : 'Field can\'t be empty'
     }
 
-    setBorderElement = (element: HTMLInputElement) => {
+    verify = (element: HTMLInputElement): boolean => {
         const caption = element.previousElementSibling as HTMLElement
 
         if (!caption) {
-            return
+            return true
         }
 
         let error = null
@@ -69,26 +72,44 @@ export class FormBlock extends Block {
 
             caption.textContent = error
             caption.classList.add('invalid-caption')
+
+            return false
         } else {
             element.classList.remove('invalid-input')
             caption.textContent = dataset[key] as string
             caption.classList.remove('invalid-caption')
+
+            return true
         }
     }
 
     redBorder = (event: Event) => {
         const element = event.target as HTMLInputElement
-        this.setBorderElement(element)
+        this.verify(element)
     }
 
-    submit = (event: Event) => {
+    submit = (event: Event): CustomNullable<Object> => {
         event.preventDefault()
+
+        let verified = true
         const form = event.target as HTMLFormElement
         const inputs = form.getElementsByTagName('input')
         for (let i = 0; i < inputs.length; i++) {
             const input = inputs[i]
 
-            this.setBorderElement(input)
+            if (!this.verify(input)) {
+                verified = false
+            }
         }
+
+        if (verified) {
+            const formData = new FormData(form)
+            const object: ElementProperties = {}
+            formData.forEach((value, key) => object[nameToKey(key)] = value as string)
+
+            return object
+        }
+
+        return null
     }
 }

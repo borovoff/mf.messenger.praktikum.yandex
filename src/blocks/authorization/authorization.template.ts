@@ -11,5 +11,9 @@ export const authorizationTemplate = `
 
         <app-button [value]="buttonValue"></app-button>
     </form>
+
+    <app-button
+        [click]="registrationClick"
+        [value]="registration"></app-button>
 </div>
 `

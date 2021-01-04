@@ -1,10 +1,16 @@
-// @ts-nocheck
+import {router} from './router-instance'
+import {Pathname} from '../models/enums/pathname'
 
-const METHODS = {
-    GET: 'GET',
-    POST: 'POST',
-    PUT: 'PUT',
-    DELETE: 'DELETE'
+enum Method {
+    GET = 'GET',
+    POST = 'POST',
+    PUT = 'PUT',
+    DELETE = 'DELETE'
+}
+
+interface RequestOptions {
+    data?: Object
+    method: Method
 }
 
 function queryStringify(data: Object) {
@@ -18,43 +24,58 @@ function queryStringify(data: Object) {
 }
 
 export class HTTPTransport {
-    get = (url, options = {}) => {
-        url += queryStringify(options.data)
+    get<T>(url: string, data?: Object) {
+        if (data) {
+            url += queryStringify(data)
+        }
 
-        return this.request(url, {...options, method: METHODS.GET}, options.timeout)
+        return this.request<T>(url, {data, method: Method.GET})
     }
 
-    post = (url, options = {}) => {
-        return this.request(url, {...options, method: METHODS.POST}, options.timeout)
+    post<T>(url: string, data: Object) {
+        return this.request<T>(url, {data, method: Method.POST})
     }
 
-    put = (url, options = {}) => {
-        return this.request(url, {...options, method: METHODS.PUT}, options.timeout)
+    put<T>(url: string, data: Object) {
+        return this.request<T>(url, {data, method: Method.PUT})
     }
 
-    delete = (url, options = {}) => {
-        return this.request(url, {...options, method: METHODS.DELETE}, options.timeout)
+    delete<T>(url: string, data: Object) {
+        return this.request<T>(url, {data, method: Method.DELETE})
     }
 
-    request = (url, options, timeout = 5000) => {
+    request<T>(url: string, options: RequestOptions, timeout = 5000): Promise<T> {
         const {method, data} = options
 
-        return new Promise((resolve, reject) => {
+        return new Promise<T>((resolve, reject) => {
             const xhr = new XMLHttpRequest()
             xhr.open(method, url)
+            xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8')
 
-            xhr.onload = function() {
-                resolve(xhr)
+            xhr.onload = () => {
+                const {response, status} = xhr
+                switch (status) {
+                    case 200:
+                        resolve(response)
+                        break
+                    case 401:
+                        router.go(Pathname.Authorization)
+                        break
+                    default:
+                        reject(response)
+                        break
+                }
+
             }
 
             xhr.onabort = reject
             xhr.onerror = reject
             xhr.ontimeout = reject
 
-            if (method === METHODS.GET || !data) {
+            if (method === Method.GET || !data) {
                 xhr.send()
             } else {
-                xhr.send(data)
+                xhr.send(JSON.stringify(data))
             }
 
             setTimeout(() => xhr.abort(), timeout)

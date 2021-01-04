@@ -6,7 +6,18 @@ import '../change-password/change-password.sass'
 import '../authorization/authotization.sass'
 
 export class SettingsComponent extends FormBlock {
-    constructor(context?: Object) {
+    constructor(context: Object = {
+        firstName: 'First name',
+        secondName: 'Second name',
+        login: 'Login',
+        email: 'Email',
+        displayName: 'Display name',
+        phone: 'Phone',
+        button: {
+            inner: 'base-button-back'
+        },
+        buttonValue: 'Change'
+    }) {
         super(context)
     }
 

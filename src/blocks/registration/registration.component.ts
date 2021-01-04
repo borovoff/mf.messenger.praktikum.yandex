@@ -4,7 +4,15 @@ import {FormBlock} from '../../form-block'
 import '../authorization/authotization.sass'
 
 export class RegistrationComponent extends FormBlock {
-    constructor(context: Object) {
+    constructor(context: Object = {
+        firstName: 'First name',
+        secondName: 'Second name',
+        login: 'Login',
+        email: 'Email',
+        password: 'Password',
+        phone: 'Phone',
+        buttonValue: 'Registration'
+    }) {
         super(context)
     }
 
