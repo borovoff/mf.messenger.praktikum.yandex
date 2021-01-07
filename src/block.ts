@@ -96,7 +96,11 @@ export class Block extends HTMLElement {
                         const element = item.element
 
                         if (element.tagName.slice(0, 4) === 'APP-') {
-                            (element as Block).setContext({[item.property]: value})
+                            if (item.property === 'class') {
+                                element.className = value
+                            } else {
+                                (element as Block).setContext({[item.property]: value})
+                            }
                         } else {
                             switch (item.property) {
                                 case 'class':

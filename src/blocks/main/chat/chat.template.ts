@@ -1,6 +1,6 @@
 export const chatTemplate = `
 <li class="chat">
-    <app-chat-image [class]="imgClass"></app-chat-image>
+    <app-chat-image [imgClass]="imgClass"></app-chat-image>
     <div class="chat-text">
         <div class="chat-top">
             <div class="chat-title">

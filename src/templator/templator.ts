@@ -182,7 +182,11 @@ export class Templator {
 
             // TODO: same logic as block proxy
             if (element.tagName.slice(0, 4) === 'APP-') {
-                (element as Block).setContext({[key]: value})
+                if (key === 'class') {
+                    element.className = value
+                } else {
+                    (element as Block).setContext({[key]: value})
+                }
             } else {
                 if (key === 'submit' || key === 'blur' || key === 'focus' || key === 'click') {
                     // @ts-ignore

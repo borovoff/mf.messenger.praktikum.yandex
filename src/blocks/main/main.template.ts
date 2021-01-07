@@ -1,9 +1,7 @@
 export const mainTemplate = `
 <div class="main-component">
     <div class="left-column">
-        <app-control-row
-            [innerMenu]="inner.menu"
-            [outerMenu]="outer.menu"></app-control-row>
+        <app-control-row></app-control-row>
 
         <ul class="ul chats">
             <app-chat [imgClass]="img.chat"></app-chat>

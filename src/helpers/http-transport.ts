@@ -51,6 +51,7 @@ export class HTTPTransport {
             const xhr = new XMLHttpRequest()
             xhr.open(method, url)
             xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8')
+            xhr.withCredentials = true
 
             xhr.onload = () => {
                 const {response, status} = xhr

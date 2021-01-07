@@ -6,13 +6,11 @@ import './main.sass'
 export class MainComponent extends Block {
     constructor(context: Object = {
         outer: {
-            menu: 'menu-button',
             micro: 'input-microphone'
         },
         inner: {
             search: 'base-button-search',
             more: 'base-button-more',
-            menu: 'base-button-menu',
             micro: 'input-microphone-img'
         },
         img: {
