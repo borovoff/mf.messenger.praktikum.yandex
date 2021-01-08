@@ -1,5 +1,7 @@
 import {EventBus} from './event-bus'
 import {Store} from './models/store'
+import {ForStore} from './models/for-store'
+import {contextGet} from './helpers/context-get'
 
 interface Meta {
     tagName: string
@@ -16,7 +18,7 @@ export class Block extends HTMLElement {
     _meta: Meta
     eventBus: () => EventBus
 
-    protected context: Object
+    protected context: any
     protected store: Store
 
     constructor(context: Object = {}, tagName = 'div') {
@@ -95,7 +97,26 @@ export class Block extends HTMLElement {
                     items.forEach(item => {
                         const element = item.element
 
-                        if (element.tagName.slice(0, 4) === 'APP-') {
+                        if (element.tagName === undefined) {
+                            const {elementProperties, element: forElement} = item.forStore as ForStore
+                            value.forEach((v: any) => {
+                                const newElement = forElement.cloneNode(false) as Block
+                                for (const [key, propertyValue] of Object.entries(elementProperties)) {
+                                    const path = propertyValue.slice(item.property.length + 1)
+                                    const val = contextGet(path, v)
+                                    if (key === 'class') {
+                                        newElement.className = val
+                                    } else {
+                                        newElement.setContext({[key]: val})
+                                    }
+                                }
+
+                                const parent = element.parentElement
+                                if (parent !== null) {
+                                    parent.insertBefore(newElement, element)
+                                }
+                            })
+                        } else if (element.tagName.slice(0, 4) === 'APP-') {
                             if (item.property === 'class') {
                                 element.className = value
                             } else {

@@ -2,6 +2,8 @@ import {Store} from '../models/store'
 import {Block} from 'src/block'
 import {ArrayStore} from '../models/array-store'
 import {ElementProperties} from '../models/types/element-properties'
+import {ForStore} from '../models/for-store'
+import {contextGet} from '../helpers/context-get'
 
 interface StoreResult {
     value: string
@@ -15,17 +17,12 @@ interface ElementStore {
     elementProperties: ElementProperties
 }
 
-interface ForStore {
-    element: HTMLElement
-    elementProperties: ElementProperties
-}
-
 export class Templator {
     private template: string
     private i = 0
     private readonly context: any
-    private element: HTMLElement
-    private parent: HTMLElement
+    private element: HTMLElement | Comment
+    private parent: HTMLElement | Comment
 
     private _store: Store = {}
 
@@ -37,21 +34,6 @@ export class Templator {
             .replace(/\s\s+/g, ' ')
         this.parent = parent
         this.context = context
-    }
-
-    get(path: string, defaultValue?: string, context = this.context) {
-        const keys = path.split('.')
-
-        let result = context
-        for (let key of keys) {
-            result = result[key]
-
-            if (result === undefined) {
-                return defaultValue
-            }
-        }
-
-        return result ?? defaultValue
     }
 
     newReplace() {
@@ -79,9 +61,9 @@ export class Templator {
 
                         const arrayStore = result.arrayStore
                         if (arrayStore === undefined) {
-                            this.element[key] = this.get(result.value)
+                            this.element[key] = contextGet(result.value, this.context)
                         } else {
-                            arrayStore.tokens[arrayStore.index] = this.get(result.value)
+                            arrayStore.tokens[arrayStore.index] = contextGet(result.value, this.context)
                             this.element[key] = arrayStore.tokens.join(' ')
                         }
 
@@ -95,7 +77,7 @@ export class Templator {
         }
     }
 
-    addToStore(value: string, key: string, element = this.element): StoreResult {
+    addToStore(value: string, key: string, element = this.element, forStore?: ForStore): StoreResult {
         let arrayStore: ArrayStore
 
         if (value.includes('+')) {
@@ -117,7 +99,7 @@ export class Templator {
         }
 
         // @ts-ignore
-        this._store[value].push({property: key, element: element, arrayStore})
+        this._store[value].push({property: key, element: element, arrayStore, forStore})
 
         // @ts-ignore
         return {value, arrayStore}
@@ -177,7 +159,7 @@ export class Templator {
                 }
 
                 result = this.addToStore(value, key, element)
-                value = this.get(value)
+                value = contextGet(value, this.context)
             }
 
             // TODO: same logic as block proxy
@@ -196,7 +178,7 @@ export class Templator {
                     // @ts-ignore
                     if (result && result.arrayStore) {
                         const arrayStore = result.arrayStore
-                        arrayStore.tokens[arrayStore.index] = this.get(result.value)
+                        arrayStore.tokens[arrayStore.index] = contextGet(result.value, this.context)
                         element.setAttribute(key, arrayStore.tokens.join(' '))
                     } else {
                         element.setAttribute(key, value)
@@ -213,29 +195,39 @@ export class Templator {
         const properties = this.elementStore.elementProperties
 
         if (properties.hasOwnProperty('*for')) {
+            const start = document.createComment('start')
+            const end = document.createComment('end')
+
             const array = properties['*for'].split(' of ')
             const [itemName, itemsName] = array
 
             const {element, elementProperties} = this.setAttr(itemName)
 
-            const values = this.get(itemsName)
+            const values = contextGet(itemsName, this.context)
 
-            values.forEach((value: any) => {
-                const newElement = element.cloneNode(false) as Block
+            this.addToStore(itemsName, itemName, end, {element, elementProperties})
+            this.parent.appendChild(start)
 
-                for (const [key, propertyValue] of Object.entries(elementProperties)) {
-                    const path = propertyValue.slice(itemName.length + 1)
-                    const val = this.get(path, undefined, value)
-                    if (key === 'class') {
-                        newElement.className = val
-                    } else {
-                        newElement.setContext({[key]: val})
+            if (values) {
+                values.forEach((value: any) => {
+                    const newElement = element.cloneNode(false) as Block
+
+                    for (const [key, propertyValue] of Object.entries(elementProperties)) {
+                        const path = propertyValue.slice(itemName.length + 1)
+                        const val = contextGet(path, value)
+                        if (key === 'class') {
+                            newElement.className = val
+                        } else {
+                            newElement.setContext({[key]: val})
+                        }
                     }
-                }
 
-                this.parent.appendChild(newElement)
-                this.element = newElement
-            })
+                    this.parent.appendChild(newElement)
+                })
+            }
+
+            this.parent.appendChild(end)
+            this.element = end
         } else {
             const {element} = this.setAttr()
             this.element = element
@@ -311,7 +303,7 @@ export class Templator {
 
                     this.setAttributes()
 
-                    const tagName = this.element.tagName
+                    const tagName = (this.element as HTMLElement).tagName
                     if (tagName !== 'INPUT' && tagName !== 'IMG') {
                         this.parent = this.element
                     }

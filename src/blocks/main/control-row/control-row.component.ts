@@ -7,10 +7,27 @@ export class ControlRowComponent extends Block {
     constructor(context: Object = {
         outerMenu: 'menu-button',
         innerMenu: 'base-button-menu',
-        items: [],
+        items: [
+            {
+                class: 'class',
+                text: 'text'
+            },
+            {
+                class: 'class1',
+                text: 'text1'
+            }
+        ],
         menuClass: 'hide'
     }) {
         super(context)
+
+        window.addEventListener('click', () => {
+            if (this.context.menuClass === 'context-menu') {
+                this.setContext({
+                    menuClass: 'hide'
+                })
+            }
+        })
 
         this.setContext({
             showMenu: this.showMenu
@@ -24,8 +41,8 @@ export class ControlRowComponent extends Block {
     }
 
     showMenu = () => {
-        this.setContext({
+        setTimeout(() => this.setContext({
             menuClass: 'context-menu'
-        })
+        }))
     }
 }
