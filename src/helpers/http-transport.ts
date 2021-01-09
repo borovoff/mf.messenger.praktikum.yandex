@@ -54,8 +54,13 @@ export class HTTPTransport {
             xhr.withCredentials = true
 
             xhr.onload = () => {
-                const {response, status} = xhr
-                switch (status) {
+                let response = xhr.response
+
+                try {
+                    response = JSON.parse(xhr.response)
+                } catch (e) {}
+
+                switch (xhr.status) {
                     case 200:
                         resolve(response)
                         break
@@ -66,7 +71,6 @@ export class HTTPTransport {
                         reject(response)
                         break
                 }
-
             }
 
             xhr.onabort = reject

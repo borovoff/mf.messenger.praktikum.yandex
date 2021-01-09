@@ -38,6 +38,6 @@ export class Route {
             return
         }
 
-        this._block.show()
+        render(this._rootQuery, this._block)
     }
 }

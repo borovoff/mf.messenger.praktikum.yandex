@@ -7,6 +7,7 @@ export const emailInputTemplate = `
         [name]="name"
         class="input"
         type="email"
+        [value]="inputValue"
         [placeholder]="name">
 </label>
 `

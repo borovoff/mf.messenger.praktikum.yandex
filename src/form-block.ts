@@ -3,6 +3,7 @@ import {InputType} from './models/enums/input-type'
 import {CustomNullable} from './models/types/custom-nullable'
 import {ElementProperties} from './models/types/element-properties'
 import {nameToKey} from './helpers/name-to-key'
+import {router} from './helpers/router-instance'
 
 type NullableString = string | null
 
@@ -13,7 +14,8 @@ export class FormBlock extends Block {
         this.setContext({
             submit: this.submit,
             blur: this.redBorder,
-            focus: this.redBorder
+            focus: this.redBorder,
+            backClick: this.backClick
         })
     }
 
@@ -111,5 +113,9 @@ export class FormBlock extends Block {
         }
 
         return null
+    }
+
+    backClick = () => {
+        router.back()
     }
 }

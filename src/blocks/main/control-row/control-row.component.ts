@@ -67,6 +67,6 @@ export class ControlRowComponent extends Block {
 
     logout = () => {
         http.post(API.logout)
-            .then(() => router.go(Pathname.Index))
+            .then(() => router.go(Pathname.Slash))
     }
 }

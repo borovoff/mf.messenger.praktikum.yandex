@@ -13,7 +13,7 @@ export const authorizationTemplate = `
     </form>
 
     <app-button
-        [click]="registrationClick"
+        [buttonClick]="registrationClick"
         [value]="registration"></app-button>
 </div>
 `

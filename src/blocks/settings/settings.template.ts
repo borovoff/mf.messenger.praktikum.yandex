@@ -2,8 +2,9 @@ export const settingsTemplate = `
 <div class="login-column">
     <div class="edit-header">
         <app-icon-button
-                [outer]="button.outer"
-                [inner]="button.inner"></app-icon-button>
+            [buttonClick]="backClick"
+            [outer]="button.outer"
+            [inner]="button.inner"></app-icon-button>
         <h3>Edit profile</h3>
     </div>
 
@@ -16,12 +17,24 @@ export const settingsTemplate = `
     </div>
 
     <form [submit]="submit">
-        <app-input [name]="firstName"></app-input>
-        <app-input [name]="secondName"></app-input>
-        <app-input [name]="displayName"></app-input>
-        <app-input [name]="login"></app-input>
-        <app-email-input [name]="email"></app-email-input>
-        <app-input [name]="phone"></app-input>
+        <app-input
+            [inputValue]="firstNameValue"
+            [name]="firstNameName"></app-input>
+        <app-input
+            [inputValue]="secondNameValue"
+            [name]="secondNameName"></app-input>
+        <app-input
+            [inputValue]="displayNameValue"
+            [name]="displayNameName"></app-input>
+        <app-input
+            [inputValue]="loginValue"
+            [name]="loginName"></app-input>
+        <app-email-input
+            [inputValue]="emailValue"
+            [name]="emailName"></app-email-input>
+        <app-input
+            [inputValue]="phoneValue"
+            [name]="phoneName"></app-input>
 
         <app-button [value]="buttonValue"></app-button>
     </form>

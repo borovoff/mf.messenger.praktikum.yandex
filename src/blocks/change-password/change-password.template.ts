@@ -2,8 +2,9 @@ export const changePasswordTemplate = `
 <div class="login-column">
     <div class="edit-header">
         <app-icon-button
-                [outer]="button.outer"
-                [inner]="button.inner"></app-icon-button>
+            [buttonClick]="backClick"
+            [outer]="button.outer"
+            [inner]="button.inner"></app-icon-button>
         <h3>Change password</h3>
     </div>
 

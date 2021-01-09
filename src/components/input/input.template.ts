@@ -7,6 +7,7 @@ export const inputTemplate = `
         [name]="name"
         class="input"
         type="text"
+        [value]="inputValue"
         [placeholder]="name">
 </label>
 `

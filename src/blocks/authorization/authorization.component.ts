@@ -37,7 +37,7 @@ export class AuthorizationComponent extends FormBlock {
 
         if (object !== null) {
             http.post(API.signin, object)
-                .then(() => router.go(Pathname.Index))
+                .then(() => router.go(Pathname.Slash))
         }
     }
 }

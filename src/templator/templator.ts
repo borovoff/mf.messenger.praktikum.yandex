@@ -10,8 +10,6 @@ interface StoreResult {
     arrayStore?: ArrayStore
 }
 
-
-
 interface ElementStore {
     tag: string
     elementProperties: ElementProperties
@@ -181,7 +179,7 @@ export class Templator {
                         arrayStore.tokens[arrayStore.index] = contextGet(result.value, this.context)
                         element.setAttribute(key, arrayStore.tokens.join(' '))
                     } else {
-                        element.setAttribute(key, value)
+                        element.setAttribute(key, value ?? '')
                     }
                 }
             }

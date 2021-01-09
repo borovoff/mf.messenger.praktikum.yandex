@@ -35,7 +35,7 @@ export class RegistrationComponent extends FormBlock {
 
         if (object !== null) {
             http.post(API.signup, object)
-                .then(() => router.go(Pathname.Index))
+                .then(() => router.go(Pathname.Slash))
         }
     }
 }

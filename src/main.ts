@@ -19,9 +19,7 @@ http.get<UserResponse>(API.user)
     .catch(error => console.log('error: ' + error))
 
 router
-    .use(Pathname.Main, MainComponent)
     .use(Pathname.Slash, MainComponent)
-    .use(Pathname.Index, MainComponent)
     .use(Pathname.Authorization, AuthorizationComponent)
     .use(Pathname.Registration, RegistrationComponent)
     .use(Pathname.ChangePassword, ChangePasswordComponent)
