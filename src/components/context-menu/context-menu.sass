@@ -2,14 +2,15 @@
     position: absolute
     display: flex
     flex-direction: column
+    left: 14px
     top: calc(var(--form-height) + 6px)
-    width: var(--form-width)
     max-height: 300px
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)
     border-radius: var(--border-radius)
     z-index: 10
     background-color: white
     overflow-y: auto
+    cursor: pointer
 
 
 .context-menu__item:hover
@@ -18,6 +19,10 @@
 
 .context-menu__item
     display: flex
+    align-items: center
+    padding: 18px
+    height: 56px
+    box-sizing: border-box
 
 
 .country

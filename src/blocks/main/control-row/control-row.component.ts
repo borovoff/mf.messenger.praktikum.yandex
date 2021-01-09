@@ -2,21 +2,15 @@ import {Templator} from '../../../templator/templator'
 import {Block} from '../../../block'
 import {controlRowTemplate} from './control-row.template'
 import './control-row.sass'
+import {router} from '../../../helpers/router-instance'
+import {Pathname} from '../../../models/enums/pathname'
+import {http} from '../../../helpers/http'
+import {API} from '../../../constants/api'
 
 export class ControlRowComponent extends Block {
     constructor(context: Object = {
         outerMenu: 'menu-button',
         innerMenu: 'base-button-menu',
-        items: [
-            {
-                class: 'class',
-                text: 'text'
-            },
-            {
-                class: 'class1',
-                text: 'text1'
-            }
-        ],
         menuClass: 'hide'
     }) {
         super(context)
@@ -30,7 +24,24 @@ export class ControlRowComponent extends Block {
         })
 
         this.setContext({
-            showMenu: this.showMenu
+            showMenu: this.showMenu,
+            items: [
+                {
+                    class: 'item__icon_edit',
+                    text: 'Edit profile',
+                    click: this.editProfile
+                },
+                {
+                    class: 'item__icon_edit',
+                    text: 'Edit password',
+                    click: this.editPassword
+                },
+                {
+                    class: 'item__icon_logout',
+                    text: 'Logout',
+                    click: this.logout
+                }
+            ],
         })
     }
 
@@ -44,5 +55,18 @@ export class ControlRowComponent extends Block {
         setTimeout(() => this.setContext({
             menuClass: 'context-menu'
         }))
+    }
+
+    editPassword = () => {
+        router.go(Pathname.ChangePassword)
+    }
+
+    editProfile = () => {
+        router.go(Pathname.Settings)
+    }
+
+    logout = () => {
+        http.post(API.logout)
+            .then(() => router.go(Pathname.Index))
     }
 }

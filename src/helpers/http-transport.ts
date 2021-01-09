@@ -32,7 +32,7 @@ export class HTTPTransport {
         return this.request<T>(url, {data, method: Method.GET})
     }
 
-    post<T>(url: string, data: Object) {
+    post<T>(url: string, data?: Object) {
         return this.request<T>(url, {data, method: Method.POST})
     }
 

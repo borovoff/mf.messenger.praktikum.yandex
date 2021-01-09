@@ -99,23 +99,33 @@ export class Block extends HTMLElement {
 
                         if (element.tagName === undefined) {
                             const {elementProperties, element: forElement} = item.forStore as ForStore
-                            value.forEach((v: any) => {
-                                const newElement = forElement.cloneNode(false) as Block
-                                for (const [key, propertyValue] of Object.entries(elementProperties)) {
-                                    const path = propertyValue.slice(item.property.length + 1)
-                                    const val = contextGet(path, v)
-                                    if (key === 'class') {
-                                        newElement.className = val
-                                    } else {
-                                        newElement.setContext({[key]: val})
+                            if (value) {
+                                value.forEach((v: any) => {
+                                    const newElement = forElement.cloneNode(false) as Block
+                                    for (const [key, propertyValue] of Object.entries(elementProperties)) {
+                                        const path = propertyValue.slice(item.property.length + 1)
+                                        const val = contextGet(path, v)
+                                        switch (key) {
+                                            case 'class':
+                                                newElement.className = val
+                                                break
+                                            case 'click':
+                                                // @ts-ignore
+                                                const fn = val as (event: Event) => any
+                                                newElement.addEventListener(key, fn)
+                                                break
+                                            default:
+                                                newElement.setContext({[key]: val})
+                                        }
                                     }
-                                }
 
-                                const parent = element.parentElement
-                                if (parent !== null) {
-                                    parent.insertBefore(newElement, element)
-                                }
-                            })
+                                    const parent = element.parentElement
+                                    if (parent !== null) {
+                                        parent.insertBefore(newElement, element)
+                                    }
+                                })
+                            }
+
                         } else if (element.tagName.slice(0, 4) === 'APP-') {
                             if (item.property === 'class') {
                                 element.className = value

@@ -1,4 +1,4 @@
 export const contextMenuItemTemplate = `
-<div>{{imgClass}}</div>
+<div [class]="'item__icon' + imgClass"></div>
 <div>{{text}}</div>
 `
