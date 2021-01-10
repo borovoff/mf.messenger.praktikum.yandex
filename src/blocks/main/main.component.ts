@@ -2,21 +2,15 @@ import {Templator} from '../../templator/templator'
 import {mainTemplate} from './main.template'
 import {Block} from '../../block'
 import './main.sass'
+import {http} from '../../helpers/http'
+import {API} from '../../constants/api'
+import {ChatsResponse} from '../../models/api/chat/chats-response'
+import {ChatComponent} from './chat/chat.component'
 
 export class MainComponent extends Block {
+    private currentChat?: ChatComponent
+
     constructor(context: Object = {
-        outer: {
-            micro: 'input-microphone'
-        },
-        inner: {
-            search: 'base-button-search',
-            more: 'base-button-more',
-            micro: 'input-microphone-img'
-        },
-        img: {
-            chat: 'chat-image',
-            header: 'chat-image chat-header-img'
-        },
         messages: [
             {
                 class: 'message stranger last first',
@@ -81,11 +75,41 @@ export class MainComponent extends Block {
         ]
     }) {
         super(context)
+
+        http.get<ChatsResponse[]>(API.chats).then(result => this.setContext({
+            chats: result
+        }))
+
+        this.setContext({
+            chatClick: this.chatClick
+        })
+
+        window.addEventListener('click', () => {
+            if (this.currentChat) {
+                this.currentChat.classList.remove('chat_current')
+                this.currentChat = undefined
+            }
+        })
     }
 
     render() {
         const templator = new Templator(mainTemplate, this, this.context)
         templator.newReplace()
         this.store = templator.store
+    }
+
+    setCurrent = (target: ChatComponent) => {
+        this.currentChat = target
+        target.classList.add('chat_current')
+        this.setContext({
+            chatTitle: target.context.chatTitle
+        })
+    }
+
+    chatClick = (event: MouseEvent) => {
+        const target = event.target
+        if (target instanceof ChatComponent) {
+            setTimeout(() => this.setCurrent(target))
+        }
     }
 }

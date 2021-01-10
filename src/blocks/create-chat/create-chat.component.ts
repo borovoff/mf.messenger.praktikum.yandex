@@ -1,42 +1,38 @@
 import {Templator} from '../../templator/templator'
-import {authorizationTemplate} from './authorization.template'
+import {createChatTemplate} from './create-chat.template'
 import {FormBlock} from '../../components/form-block'
-import './authotization.sass'
+import './crate-chat.sass'
 import {router} from '../../helpers/router-instance'
 import {Pathname} from '../../models/enums/pathname'
 import {http} from '../../helpers/http'
 import {API} from '../../constants/api'
 
-export class AuthorizationComponent extends FormBlock {
+export class CreateChatComponent extends FormBlock {
     constructor(context: Object = {
-        name: 'Login',
-        password: 'Password',
-        buttonValue: 'Authorization',
-        registration: 'Registration'
+        name: 'Title',
+        buttonValue: 'Create',
+        button: {
+            inner: 'base-button-back'
+        },
     }) {
         super(context)
 
         this.setContext({
-            registrationClick: this.registrationClick,
-            submit: this.authSubmit
+            submit: this.createChat
         })
     }
 
     render() {
-        const templator = new Templator(authorizationTemplate, this, this.context)
+        const templator = new Templator(createChatTemplate, this, this.context)
         templator.newReplace()
         this.store = templator.store
     }
 
-    registrationClick = () => {
-        router.go(Pathname.Registration)
-    }
-
-    authSubmit = (event: Event) => {
+    createChat = (event: Event) => {
         const object = this.submit(event)
 
         if (object !== null) {
-            http.post(API.signin, object)
+            http.post(API.chats, object)
                 .then(() => router.go(Pathname.Slash))
         }
     }

@@ -18,15 +18,19 @@ import {MessageInputComponent} from './blocks/main/message-input/message-input.c
 import {ControlRowComponent} from './blocks/main/control-row/control-row.component'
 import {ContextMenuComponent} from './components/context-menu/context-menu.component'
 import {ContextMenuItemComponent} from './components/context-menu/context-menu-item/context-menu-item.component'
+import {ChatsActionsComponent} from './blocks/main/chats-actions/chats-actions.component'
+import {CreateChatComponent} from './blocks/create-chat/create-chat.component'
 
 export class ComponentRegistry {
     constructor() {
+        customElements.define('app-create-chat', CreateChatComponent)
         customElements.define('app-authorization', AuthorizationComponent)
         customElements.define('app-registration', RegistrationComponent)
         customElements.define('app-change-password', ChangePasswordComponent)
         customElements.define('app-settings', SettingsComponent)
         customElements.define('app-main', MainComponent)
         customElements.define('app-chat-header', ChatHeaderComponent)
+        customElements.define('app-chats-actions', ChatsActionsComponent)
         customElements.define('app-message-input', MessageInputComponent)
         customElements.define('app-control-row', ControlRowComponent)
 

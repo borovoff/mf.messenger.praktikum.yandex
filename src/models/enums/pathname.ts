@@ -8,5 +8,6 @@ export enum Pathname {
     PhotoPicker = '/photo-picker',
     ChangePassword = '/change-password',
     NotFound = '404',
-    HyperError = '500'
+    HyperError = '500',
+    CreateChat = '/create-chat'
 }

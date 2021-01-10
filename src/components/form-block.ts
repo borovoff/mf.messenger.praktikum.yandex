@@ -1,9 +1,9 @@
-import {Block} from './block'
-import {InputType} from './models/enums/input-type'
-import {CustomNullable} from './models/types/custom-nullable'
-import {ElementProperties} from './models/types/element-properties'
-import {nameToKey} from './helpers/name-to-key'
-import {router} from './helpers/router-instance'
+import {Block} from '../block'
+import {InputType} from '../models/enums/input-type'
+import {CustomNullable} from '../models/types/custom-nullable'
+import {ElementProperties} from '../models/types/element-properties'
+import {nameToKey} from '../helpers/name-to-key'
+import {router} from '../helpers/router-instance'
 
 type NullableString = string | null
 

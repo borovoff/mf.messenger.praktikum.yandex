@@ -10,6 +10,7 @@ import {router} from './helpers/router-instance'
 import {http} from './helpers/http'
 import {UserResponse} from './models/api/user/user-response'
 import {API} from './constants/api'
+import {CreateChatComponent} from './blocks/create-chat/create-chat.component'
 
 
 new ComponentRegistry()
@@ -24,5 +25,6 @@ router
     .use(Pathname.Registration, RegistrationComponent)
     .use(Pathname.ChangePassword, ChangePasswordComponent)
     .use(Pathname.Settings, SettingsComponent)
+    .use(Pathname.CreateChat, CreateChatComponent)
     .start()
 

@@ -2,8 +2,6 @@
     position: absolute
     display: flex
     flex-direction: column
-    left: 14px
-    top: calc(var(--form-height) + 6px)
     max-height: 300px
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)
     border-radius: var(--border-radius)
@@ -11,6 +9,22 @@
     background-color: white
     overflow-y: auto
     cursor: pointer
+
+
+.context-menu_main
+    left: 14px
+    top: calc(var(--form-height) + 6px)
+
+
+.context-menu_chat-header
+    right: 14px
+    top: calc(var(--form-height) + 6px)
+
+
+.context-menu_edit-chat
+    right: 8px
+    bottom: 62px
+    width: 200px
 
 
 .context-menu__item:hover

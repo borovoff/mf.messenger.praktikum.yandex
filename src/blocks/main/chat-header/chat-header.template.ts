@@ -3,14 +3,19 @@ export const chatHeaderTemplate = `
     <app-chat-image [imgClass]="imgHeader"></app-chat-image>
 
     <div class="chat-title-column">
-        <div class="chat-header-title">Юля</div>
+        <div class="chat-header-title">{{chatTitle}}</div>
         <div class="chat-online">online</div>
     </div>
 
     <app-icon-button
         [inner]="search"></app-icon-button>
     <app-icon-button
+        [buttonClick]="showMenu"
         [inner]="more"></app-icon-button>
+
+    <app-context-menu
+        [class]="menuClass"
+        [items]="items"></app-context-menu>
 
 </div>
 `

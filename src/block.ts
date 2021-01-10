@@ -18,7 +18,7 @@ export class Block extends HTMLElement {
     _meta: Meta
     eventBus: () => EventBus
 
-    protected context: any
+    context: any
     protected store: Store
 
     constructor(context: Object = {}, tagName = 'div') {

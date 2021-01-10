@@ -3,15 +3,19 @@ export const mainTemplate = `
     <div class="left-column">
         <app-control-row></app-control-row>
 
-        <ul class="ul chats">
-            <app-chat [imgClass]="img.chat"></app-chat>
+        <ul
+            [click]="chatClick"
+            class="ul chats">
+            <app-chat
+                *for="chat of chats"
+                class="chat"
+                [chatTitle]="chat.title"></app-chat>
+
+            <app-chats-actions class="chats__actions"></app-chats-actions>
         </ul>
     </div>
     <div class="right-column">
-        <app-chat-header
-            [search]="inner.search"
-            [more]="inner.more"
-            [imgHeader]="img.header"></app-chat-header>
+        <app-chat-header [chatTitle]="chatTitle"></app-chat-header>
 
         <div class="messages-component">
             <ul class="ul messages">
@@ -24,9 +28,7 @@ export const mainTemplate = `
             </ul>
         </div>
 
-        <app-message-input
-            [innerMicro]="inner.micro"
-            [outerMicro]="outer.micro"></app-message-input>
+        <app-message-input></app-message-input>
     </div>
 </div>
 `

@@ -1,6 +1,6 @@
 import {Templator} from '../../templator/templator'
 import {passwordInputTemplate} from './password-input.template'
-import {FormBlock} from '../../form-block'
+import {FormBlock} from '../form-block'
 import './password-input.sass'
 import '../input/input.sass'
 
