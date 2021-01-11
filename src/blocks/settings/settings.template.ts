@@ -1,4 +1,10 @@
 export const settingsTemplate = `
+<input
+    id="fileInput"
+    type="file"
+    accept="image/*"
+    class="hide">
+<app-photo-picker [class]="pickerClass"></app-photo-picker>
 <div class="login-column">
     <div class="edit-header">
         <app-icon-button
@@ -8,12 +14,15 @@ export const settingsTemplate = `
         <h3>Edit profile</h3>
     </div>
 
-
-    <div class="photo-preview">
-        <img class="main-avatar">
+    <div
+        [click]="showPicker"
+        class="photo-preview">
         <img
-                class="add-photo"
-                src="assets/cameraadd_svg.svg">
+            [src]="avatarValue"
+            class="main-avatar">
+        <img
+            class="add-photo"
+            src="assets/cameraadd_svg.svg">
     </div>
 
     <form [submit]="submit">

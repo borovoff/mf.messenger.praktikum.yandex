@@ -1,4 +1,3 @@
-import {Templator} from '../../templator/templator'
 import {registrationTemplate} from './registration.template'
 import {FormBlock} from '../../components/form-block'
 import '../authorization/authotization.sass'
@@ -17,17 +16,11 @@ export class RegistrationComponent extends FormBlock {
         phone: 'Phone',
         buttonValue: 'Registration'
     }) {
-        super(context)
+        super(context, registrationTemplate)
 
         this.setContext({
             submit: this.registrationSubmit
         })
-    }
-
-    render() {
-        const templator = new Templator(registrationTemplate, this, this.context)
-        templator.newReplace()
-        this.store = templator.store
     }
 
     registrationSubmit = (event: Event) => {

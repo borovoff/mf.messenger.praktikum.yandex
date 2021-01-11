@@ -1,4 +1,3 @@
-import {Templator} from '../../templator/templator'
 import {createChatTemplate} from './create-chat.template'
 import {FormBlock} from '../../components/form-block'
 import './crate-chat.sass'
@@ -15,17 +14,11 @@ export class CreateChatComponent extends FormBlock {
             inner: 'base-button-back'
         },
     }) {
-        super(context)
+        super(context, createChatTemplate)
 
         this.setContext({
             submit: this.createChat
         })
-    }
-
-    render() {
-        const templator = new Templator(createChatTemplate, this, this.context)
-        templator.newReplace()
-        this.store = templator.store
     }
 
     createChat = (event: Event) => {

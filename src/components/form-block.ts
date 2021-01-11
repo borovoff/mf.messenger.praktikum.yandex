@@ -8,14 +8,15 @@ import {router} from '../helpers/router-instance'
 type NullableString = string | null
 
 export class FormBlock extends Block {
-    constructor(context?: Object) {
-        super(context)
+    constructor(context?: Object, template?: string) {
+        super(context, template)
 
         this.setContext({
             submit: this.submit,
             blur: this.redBorder,
             focus: this.redBorder,
-            backClick: this.backClick
+            backClick: this.backClick,
+            buttonInner: 'base-button-back'
         })
     }
 

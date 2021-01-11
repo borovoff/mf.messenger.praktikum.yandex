@@ -11,6 +11,8 @@ import {http} from './helpers/http'
 import {UserResponse} from './models/api/user/user-response'
 import {API} from './constants/api'
 import {CreateChatComponent} from './blocks/create-chat/create-chat.component'
+import {ChatUsersComponent} from './blocks/chat-users/chat-users.component'
+import {RemoveUserComponent} from './blocks/remove-user/remove-user.component'
 
 
 new ComponentRegistry()
@@ -26,5 +28,6 @@ router
     .use(Pathname.ChangePassword, ChangePasswordComponent)
     .use(Pathname.Settings, SettingsComponent)
     .use(Pathname.CreateChat, CreateChatComponent)
+    .use(Pathname.ChatUsers, ChatUsersComponent)
+    .use(Pathname.RemoveUser, RemoveUserComponent)
     .start()
-

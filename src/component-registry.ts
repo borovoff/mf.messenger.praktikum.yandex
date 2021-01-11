@@ -20,10 +20,16 @@ import {ContextMenuComponent} from './components/context-menu/context-menu.compo
 import {ContextMenuItemComponent} from './components/context-menu/context-menu-item/context-menu-item.component'
 import {ChatsActionsComponent} from './blocks/main/chats-actions/chats-actions.component'
 import {CreateChatComponent} from './blocks/create-chat/create-chat.component'
+import {ChatUsersComponent} from './blocks/chat-users/chat-users.component'
+import {RemoveUserComponent} from './blocks/remove-user/remove-user.component'
 
 export class ComponentRegistry {
     constructor() {
         customElements.define('app-create-chat', CreateChatComponent)
+
+        customElements.define('app-chat-users', ChatUsersComponent)
+        customElements.define('app-remove-user', RemoveUserComponent)
+
         customElements.define('app-authorization', AuthorizationComponent)
         customElements.define('app-registration', RegistrationComponent)
         customElements.define('app-change-password', ChangePasswordComponent)

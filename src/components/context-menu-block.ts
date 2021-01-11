@@ -3,8 +3,8 @@ import {Block} from '../block'
 export class ContextMenuBlock extends Block {
     private readonly menuClass: string
 
-    constructor(menuClass: string, context?: Object) {
-        super(context)
+    constructor(menuClass: string, context?: Object, template?: string) {
+        super(context, template)
 
         this.menuClass = menuClass
 

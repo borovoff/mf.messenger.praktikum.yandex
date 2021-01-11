@@ -2,6 +2,7 @@ import {EventBus} from './event-bus'
 import {Store} from './models/store'
 import {ForStore} from './models/for-store'
 import {contextGet} from './helpers/context-get'
+import {Templator} from './templator/templator'
 
 interface Meta {
     tagName: string
@@ -20,12 +21,16 @@ export class Block extends HTMLElement {
 
     context: any
     protected store: Store
+    private readonly template: string
 
-    constructor(context: Object = {}, tagName = 'div') {
+    constructor(context: Object = {}, template: string = '') {
         super()
+
+        this.template = template
+
         const eventBus = new EventBus()
         this._meta = {
-            tagName
+            tagName: 'div'
         }
 
         this.context = this._makeContextProxy(context)
@@ -72,7 +77,11 @@ export class Block extends HTMLElement {
         this.render()
     }
 
-    render() {}
+    render() {
+        const templator = new Templator(this.template, this, this.context)
+        templator.newReplace()
+        this.store = templator.store
+    }
 
     getContent() {
         return this.element

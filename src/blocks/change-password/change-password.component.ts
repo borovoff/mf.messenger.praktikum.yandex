@@ -1,4 +1,3 @@
-import {Templator} from '../../templator/templator'
 import {changePasswordTemplate} from './change-password.template'
 import {FormBlock} from '../../components/form-block'
 import './change-password.sass'
@@ -19,17 +18,11 @@ export class ChangePasswordComponent extends FormBlock {
         repeatPassword: 'Repeat password',
         buttonValue: 'Change'
     }) {
-        super(context)
+        super(context, changePasswordTemplate)
 
         this.setContext({
             submit: this.passSubmit
         })
-    }
-
-    render() {
-        const templator = new Templator(changePasswordTemplate, this, this.context)
-        templator.newReplace()
-        this.store = templator.store
     }
 
     passSubmit = (event: Event) => {

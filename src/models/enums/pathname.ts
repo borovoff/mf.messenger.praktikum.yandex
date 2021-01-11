@@ -9,5 +9,7 @@ export enum Pathname {
     ChangePassword = '/change-password',
     NotFound = '404',
     HyperError = '500',
-    CreateChat = '/create-chat'
+    CreateChat = '/create-chat',
+    ChatUsers = '/chat-users',
+    RemoveUser = '/remove-user'
 }

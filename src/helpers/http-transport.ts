@@ -50,7 +50,11 @@ export class HTTPTransport {
         return new Promise<T>((resolve, reject) => {
             const xhr = new XMLHttpRequest()
             xhr.open(method, url)
-            xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8')
+
+            if (!(data instanceof FormData)) {
+                xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8')
+            }
+
             xhr.withCredentials = true
 
             xhr.onload = () => {
@@ -80,7 +84,11 @@ export class HTTPTransport {
             if (method === Method.GET || !data) {
                 xhr.send()
             } else {
-                xhr.send(JSON.stringify(data))
+                if (data instanceof FormData) {
+                    xhr.send(data)
+                } else {
+                    xhr.send(JSON.stringify(data))
+                }
             }
 
             setTimeout(() => xhr.abort(), timeout)

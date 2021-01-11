@@ -1,4 +1,3 @@
-import {Templator} from '../../templator/templator'
 import {mainTemplate} from './main.template'
 import {Block} from '../../block'
 import './main.sass'
@@ -74,7 +73,7 @@ export class MainComponent extends Block {
             }
         ]
     }) {
-        super(context)
+        super(context, mainTemplate)
 
         http.get<ChatsResponse[]>(API.chats).then(result => this.setContext({
             chats: result
@@ -90,12 +89,6 @@ export class MainComponent extends Block {
                 this.currentChat = undefined
             }
         })
-    }
-
-    render() {
-        const templator = new Templator(mainTemplate, this, this.context)
-        templator.newReplace()
-        this.store = templator.store
     }
 
     setCurrent = (target: ChatComponent) => {

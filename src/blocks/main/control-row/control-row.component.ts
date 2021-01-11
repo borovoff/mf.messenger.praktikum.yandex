@@ -1,4 +1,3 @@
-import {Templator} from '../../../templator/templator'
 import {controlRowTemplate} from './control-row.template'
 import './control-row.sass'
 import {router} from '../../../helpers/router-instance'
@@ -12,7 +11,7 @@ export class ControlRowComponent extends ContextMenuBlock {
         outerMenu: 'menu-button',
         innerMenu: 'base-button-menu'
     }) {
-        super('context-menu context-menu_main', context)
+        super('context-menu context-menu_main', context, controlRowTemplate)
 
         this.setContext({
             items: [
@@ -33,12 +32,6 @@ export class ControlRowComponent extends ContextMenuBlock {
                 }
             ],
         })
-    }
-
-    render() {
-        const templator = new Templator(controlRowTemplate, this, this.context)
-        templator.newReplace()
-        this.store = templator.store
     }
 
     editPassword = () => {

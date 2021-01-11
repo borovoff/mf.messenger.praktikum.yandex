@@ -1,7 +1,8 @@
-import {Templator} from '../../../templator/templator'
 import {chatHeaderTemplate} from './chat-header.template'
 import './chat-header.sass'
 import {ContextMenuBlock} from '../../../components/context-menu-block'
+import {router} from '../../../helpers/router-instance'
+import {Pathname} from '../../../models/enums/pathname'
 
 export class ChatHeaderComponent extends ContextMenuBlock {
     constructor(context: Object = {
@@ -9,26 +10,29 @@ export class ChatHeaderComponent extends ContextMenuBlock {
         more: 'base-button-more',
         imgHeader: 'chat-image chat-header-img'
     }) {
-        super('context-menu context-menu_chat-header', context)
+        super('context-menu context-menu_chat-header', context, chatHeaderTemplate)
 
         this.setContext({
             items: [
                 {
-                    class: 'item__icon_group',
-                    text: 'Chat users',
+                    class: 'item__icon_add-user',
+                    text: 'Add user',
                     click: this.addMembers
+                },
+                {
+                    class: 'item__icon_delete-user',
+                    text: 'Remove user',
+                    click: this.removeUser
                 }
             ],
         })
     }
 
-    render() {
-        const templator = new Templator(chatHeaderTemplate, this, this.context)
-        templator.newReplace()
-        this.store = templator.store
+    addMembers = () => {
+        router.go(Pathname.ChatUsers)
     }
 
-    addMembers = () => {
-        console.log('hi')
+    removeUser = () => {
+        router.go(Pathname.RemoveUser)
     }
 }

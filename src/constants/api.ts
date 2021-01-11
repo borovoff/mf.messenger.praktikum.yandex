@@ -13,14 +13,14 @@ export class API {
     static messageCount(id: number): string {
         return `${BASE_PATH}chats/new/${id}`
     }
-    static avatar = `${BASE_PATH}chats/avatar`
+    static chatAvatar = `${BASE_PATH}chats/avatar`
     static chatUsers = `${BASE_PATH}chats/users`
     static getToken(id: number): string {
         return `${BASE_PATH}chats/token/${id}`
     }
 
     static changeProfile = `${BASE_PATH}user/profile`
-    static changeAvatar = `${BASE_PATH}user/profile/avatar`
+    static userAvatar = `${BASE_PATH}user/profile/avatar`
     static changePassword = `${BASE_PATH}user/password`
     static getUser(id: number): string {
         return `${BASE_PATH}user/${id}`
