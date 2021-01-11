@@ -1,6 +1,8 @@
 export const chatHeaderTemplate = `
 <div class="chat-header">
-    <app-chat-image [imgClass]="imgHeader"></app-chat-image>
+    <app-chat-image
+        [circleClass]="circleClass"
+        [chat]="chat"></app-chat-image>
 
     <div class="chat-title-column">
         <div class="chat-header-title">{{chatTitle}}</div>

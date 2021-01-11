@@ -112,8 +112,13 @@ export class Block extends HTMLElement {
                                 value.forEach((v: any) => {
                                     const newElement = forElement.cloneNode(false) as Block
                                     for (const [key, propertyValue] of Object.entries(elementProperties)) {
-                                        const path = propertyValue.slice(item.property.length + 1)
-                                        const val = contextGet(path, v)
+                                        let val = v
+
+                                        if (propertyValue.includes('.')) {
+                                            const path = propertyValue.slice(item.property.length + 1)
+                                            val = contextGet(path, v)
+                                        }
+
                                         switch (key) {
                                             case 'class':
                                                 newElement.className = val

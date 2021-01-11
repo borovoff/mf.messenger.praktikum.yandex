@@ -8,7 +8,7 @@ export class ChatHeaderComponent extends ContextMenuBlock {
     constructor(context: Object = {
         search: 'base-button-search',
         more: 'base-button-more',
-        imgHeader: 'chat-image chat-header-img'
+        circleClass: 'letter-circle letter-circle_chat-header'
     }) {
         super('context-menu context-menu_chat-header', context, chatHeaderTemplate)
 

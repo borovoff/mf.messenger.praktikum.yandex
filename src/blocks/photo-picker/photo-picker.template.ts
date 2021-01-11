@@ -1,5 +1,5 @@
 export const photoPickerTemplate = `
-<div class="photo-picker flex-center">
+<div class="popup photo-picker flex-center">
     <app-icon-button
         [buttonClick]="sendPhoto"
         [outer]="checkButton.outer"

@@ -9,13 +9,16 @@ export const mainTemplate = `
             <app-chat
                 *for="chat of chats"
                 class="chat"
+                [chat]="chat"
                 [chatTitle]="chat.title"></app-chat>
 
             <app-chats-actions class="chats__actions"></app-chats-actions>
         </ul>
     </div>
     <div class="right-column">
-        <app-chat-header [chatTitle]="chatTitle"></app-chat-header>
+        <app-chat-header
+            [chat]="currentChat"
+            [chatTitle]="chatTitle"></app-chat-header>
 
         <div class="messages-component">
             <ul class="ul messages">

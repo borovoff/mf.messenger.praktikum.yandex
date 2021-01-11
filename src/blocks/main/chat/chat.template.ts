@@ -1,7 +1,7 @@
 export const chatTemplate = `
 <app-chat-image
-    class="disable_events"
-    [imgClass]="imgClass"></app-chat-image>
+    [chat]="chat"
+    class="disable_events"></app-chat-image>
 <div class="chat__text disable_events">
     <div class="chat__top">
         <div class="chat__title">

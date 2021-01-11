@@ -22,6 +22,7 @@ import {ChatsActionsComponent} from './blocks/main/chats-actions/chats-actions.c
 import {CreateChatComponent} from './blocks/create-chat/create-chat.component'
 import {ChatUsersComponent} from './blocks/chat-users/chat-users.component'
 import {RemoveUserComponent} from './blocks/remove-user/remove-user.component'
+import {ErrorPopupComponent} from './blocks/error-popup/error-popup.component'
 
 export class ComponentRegistry {
     constructor() {
@@ -29,6 +30,8 @@ export class ComponentRegistry {
 
         customElements.define('app-chat-users', ChatUsersComponent)
         customElements.define('app-remove-user', RemoveUserComponent)
+
+        customElements.define('app-error-popup', ErrorPopupComponent)
 
         customElements.define('app-authorization', AuthorizationComponent)
         customElements.define('app-registration', RegistrationComponent)

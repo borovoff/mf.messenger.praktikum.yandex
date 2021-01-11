@@ -94,8 +94,10 @@ export class MainComponent extends Block {
     setCurrent = (target: ChatComponent) => {
         this.currentChat = target
         target.classList.add('chat_current')
+        const context = target.context
         this.setContext({
-            chatTitle: target.context.chatTitle
+            chatTitle: context.chatTitle,
+            currentChat: context.chat
         })
     }
 

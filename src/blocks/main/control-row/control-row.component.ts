@@ -44,6 +44,6 @@ export class ControlRowComponent extends ContextMenuBlock {
 
     logout = () => {
         http.post(API.logout)
-            .then(() => router.go(Pathname.Slash))
+            .then(() => router.go(Pathname.Authorization))
     }
 }

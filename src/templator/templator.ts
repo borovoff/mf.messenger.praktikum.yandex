@@ -211,8 +211,13 @@ export class Templator {
                     const newElement = element.cloneNode(false) as Block
 
                     for (const [key, propertyValue] of Object.entries(elementProperties)) {
-                        const path = propertyValue.slice(itemName.length + 1)
-                        const val = contextGet(path, value)
+                        let val = value
+
+                        if (propertyValue.includes('.')) {
+                            const path = propertyValue.slice(itemName.length + 1)
+                            val = contextGet(path, value)
+                        }
+
                         if (key === 'class') {
                             newElement.className = val
                         } else {

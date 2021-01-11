@@ -1,5 +1,6 @@
 import {router} from './router-instance'
 import {Pathname} from '../models/enums/pathname'
+import {showError} from './show-error'
 
 enum Method {
     GET = 'GET',
@@ -72,6 +73,10 @@ export class HTTPTransport {
                         router.go(Pathname.Authorization)
                         break
                     default:
+                        showError({
+                            errorJson: xhr.response,
+                            outerClass: 'cancel-area flex-center'
+                        })
                         reject(response)
                         break
                 }
