@@ -1,5 +1,5 @@
 import {chatTemplate} from './chat.template'
-import {Block} from '../../../block'
+import {Block} from '../../../components/block/block'
 import './chat.sass'
 
 export class ChatComponent extends Block {

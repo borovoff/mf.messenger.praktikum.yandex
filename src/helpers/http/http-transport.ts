@@ -1,7 +1,7 @@
-import {router} from './router-instance'
-import {Pathname} from '../models/enums/pathname'
-import {showError} from './show-error'
-import {queryStringify} from './query-stringify'
+import {router} from '../router/router-instance'
+import {Pathname} from '../../models/enums/pathname'
+import {showError} from '../show-error'
+import {queryStringify} from '../query-stringify'
 
 enum Method {
     GET = 'GET',
@@ -64,10 +64,7 @@ export class HTTPTransport {
                         router.go(Pathname.Authorization)
                         break
                     default:
-                        showError({
-                            errorJson: JSON.stringify(response, undefined, 4),
-                            outerClass: 'cancel-area flex-center'
-                        })
+                        showError(JSON.stringify(response, undefined, 4))
                         reject(response)
                         break
                 }

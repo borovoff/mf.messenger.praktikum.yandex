@@ -1,4 +1,4 @@
-import {Block} from '../../block'
+import {Block} from '../block/block'
 import {contextMenuTemplate} from './context-menu.template'
 import './context-menu.sass'
 

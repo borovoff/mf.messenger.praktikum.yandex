@@ -1,5 +1,5 @@
 import {beforeMessagesTemplate} from './before-messages.template'
-import {Block} from '../../../block'
+import {Block} from '../../../components/block/block'
 import './before-messages.sass'
 
 export class BeforeMessagesComponent extends Block {

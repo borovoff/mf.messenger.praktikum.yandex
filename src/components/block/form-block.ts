@@ -1,9 +1,13 @@
-import {Block} from '../block'
-import {InputType} from '../models/enums/input-type'
-import {CustomNullable} from '../models/types/custom-nullable'
-import {ElementProperties} from '../models/types/element-properties'
-import {nameToKey} from '../helpers/name-to-key'
-import {router} from '../helpers/router-instance'
+import {Block} from './block'
+import {InputType} from '../../models/enums/input-type'
+import {CustomNullable} from '../../models/types/custom-nullable'
+import {ElementProperties} from '../../models/types/element-properties'
+import {nameToKey} from '../../helpers/name-to-key'
+import {router} from '../../helpers/router/router-instance'
+import {http} from '../../helpers/http/http'
+import {UserResponse} from '../../models/api/user/user-response'
+import {API} from '../../constants/api'
+import {showError} from '../../helpers/show-error'
 
 type NullableString = string | null
 
@@ -114,6 +118,35 @@ export class FormBlock extends Block {
         }
 
         return null
+    }
+
+    findSubmit = (event: Event, fn: (parameter: any) => void) => {
+        const object = this.submit(event)
+
+        if (object !== null) {
+            http.post<UserResponse[]>(API.getByLogin, object)
+                .then(result => {
+                    if (result.length === 0) {
+                        showError('No results')
+                        return
+                    }
+
+                    const firstResult = result[0]
+                    const login = firstResult.login
+                    if (login !== object.login) {
+                        showError(`Not found this login, but found: ${login}`)
+                        return
+                    }
+
+                    const addRequest = {
+                        chatId: router.history.state.chatId,
+                        users: [firstResult.id]
+                    }
+
+                    fn(addRequest)
+                })
+
+        }
     }
 
     backClick = () => {

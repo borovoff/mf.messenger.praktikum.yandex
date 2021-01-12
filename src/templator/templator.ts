@@ -1,5 +1,5 @@
 import {Store} from '../models/store'
-import {Block} from 'src/block'
+import {Block} from 'src/components/block/block'
 import {ArrayStore} from '../models/array-store'
 import {ElementProperties} from '../models/types/element-properties'
 import {ForStore} from '../models/for-store'

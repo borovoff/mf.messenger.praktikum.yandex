@@ -1,10 +1,10 @@
 import {controlRowTemplate} from './control-row.template'
 import './control-row.sass'
-import {router} from '../../../helpers/router-instance'
+import {router} from '../../../helpers/router/router-instance'
 import {Pathname} from '../../../models/enums/pathname'
-import {http} from '../../../helpers/http'
+import {http} from '../../../helpers/http/http'
 import {API} from '../../../constants/api'
-import {ContextMenuBlock} from '../../../components/context-menu-block'
+import {ContextMenuBlock} from '../../../components/block/context-menu-block'
 
 export class ControlRowComponent extends ContextMenuBlock {
     constructor(context: Object = {

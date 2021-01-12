@@ -1,6 +1,6 @@
 import {contextMenuItemTemplate} from './context-menu-item.template'
 import './context-menu-item.sass'
-import {Block} from '../../../block'
+import {Block} from '../../block/block'
 
 export class ContextMenuItemComponent extends Block {
     constructor(context?: Object) {

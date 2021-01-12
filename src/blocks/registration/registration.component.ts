@@ -1,10 +1,10 @@
 import {registrationTemplate} from './registration.template'
-import {FormBlock} from '../../components/form-block'
+import {FormBlock} from '../../components/block/form-block'
 import '../authorization/authotization.sass'
-import {http} from '../../helpers/http'
+import {http} from '../../helpers/http/http'
 import {API} from '../../constants/api'
 import {Pathname} from '../../models/enums/pathname'
-import {router} from '../../helpers/router-instance'
+import {router} from '../../helpers/router/router-instance'
 
 export class RegistrationComponent extends FormBlock {
     constructor(context: Object = {

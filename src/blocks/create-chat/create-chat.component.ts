@@ -1,9 +1,9 @@
 import {createChatTemplate} from './create-chat.template'
-import {FormBlock} from '../../components/form-block'
+import {FormBlock} from '../../components/block/form-block'
 import './crate-chat.sass'
-import {router} from '../../helpers/router-instance'
+import {router} from '../../helpers/router/router-instance'
 import {Pathname} from '../../models/enums/pathname'
-import {http} from '../../helpers/http'
+import {http} from '../../helpers/http/http'
 import {API} from '../../constants/api'
 
 export class CreateChatComponent extends FormBlock {

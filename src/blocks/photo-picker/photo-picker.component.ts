@@ -1,7 +1,7 @@
-import {Block} from '../../block'
+import {Block} from '../../components/block/block'
 import {photoPickerTemplate} from './photo-picker.template'
 import './photo-picker.sass'
-import {http} from '../../helpers/http'
+import {http} from '../../helpers/http/http'
 import {API} from '../../constants/api'
 
 export class PhotoPickerComponent extends Block {

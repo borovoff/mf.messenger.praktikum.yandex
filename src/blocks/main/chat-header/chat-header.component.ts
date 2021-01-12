@@ -1,7 +1,7 @@
 import {chatHeaderTemplate} from './chat-header.template'
 import './chat-header.sass'
-import {ContextMenuBlock} from '../../../components/context-menu-block'
-import {router} from '../../../helpers/router-instance'
+import {ContextMenuBlock} from '../../../components/block/context-menu-block'
+import {router} from '../../../helpers/router/router-instance'
 import {Pathname} from '../../../models/enums/pathname'
 
 export class ChatHeaderComponent extends ContextMenuBlock {

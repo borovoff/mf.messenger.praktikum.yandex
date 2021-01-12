@@ -1,8 +1,8 @@
-import {EventBus} from './event-bus'
-import {Store} from './models/store'
-import {ForStore} from './models/for-store'
-import {contextGet} from './helpers/context-get'
-import {Templator} from './templator/templator'
+import {EventBus} from '../../event-bus'
+import {Store} from '../../models/store'
+import {ForStore} from '../../models/for-store'
+import {contextGet} from '../../helpers/context-get'
+import {Templator} from '../../templator/templator'
 
 interface Meta {
     tagName: string
@@ -38,24 +38,29 @@ export class Block extends HTMLElement {
         this._registerEvents(eventBus)
         eventBus.emit(Block.EVENTS.INIT)
     }
+
     _registerEvents(eventBus: EventBus) {
         eventBus.on(Block.EVENTS.INIT, this.init.bind(this))
         eventBus.on(Block.EVENTS.FLOW_CDM, this._componentDidMount.bind(this))
         eventBus.on(Block.EVENTS.FLOW_CDU, this._componentDidUpdate.bind(this))
         eventBus.on(Block.EVENTS.FLOW_RENDER, this._render.bind(this))
     }
+
     _createResources() {
         const { tagName } = this._meta
         this._element = this._createDocumentElement(tagName)
     }
+
     init() {
         this._createResources()
         this.eventBus().emit(Block.EVENTS.FLOW_CDM)
     }
+
     _componentDidMount() {
         this.componentDidMount()
         this.eventBus().emit(Block.EVENTS.FLOW_RENDER)
     }
+
     componentDidMount() {}
 
     _componentDidUpdate() {
@@ -73,6 +78,7 @@ export class Block extends HTMLElement {
     get element(): HTMLElement {
         return this._element
     }
+
     _render() {
         this.render()
     }
@@ -203,6 +209,5 @@ export class Block extends HTMLElement {
     }
 
     addToDom() {
-
     }
 }

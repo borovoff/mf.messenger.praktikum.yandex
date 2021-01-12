@@ -1,5 +1,5 @@
 import {passwordInputTemplate} from './password-input.template'
-import {FormBlock} from '../form-block'
+import {FormBlock} from '../block/form-block'
 import './password-input.sass'
 import '../input/input.sass'
 

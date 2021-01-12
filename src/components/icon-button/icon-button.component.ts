@@ -1,4 +1,4 @@
-import {Block} from '../../block'
+import {Block} from '../block/block'
 import {iconButtonTemplate} from './icon-button.template'
 import './icon-button.sass'
 

@@ -1,5 +1,5 @@
 import {chatImageTemplate} from './chat-image.template'
-import {Block} from '../../../block'
+import {Block} from '../../../components/block/block'
 import './chat-image.sass'
 import {ChatsResponse} from '../../../models/api/chat/chats-response'
 

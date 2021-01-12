@@ -1,9 +1,9 @@
 import './chat-users.sass'
 import {chatUsersTemplate} from './chat-users.template'
-import {FormBlock} from '../../components/form-block'
-import {http} from '../../helpers/http'
+import {FormBlock} from '../../components/block/form-block'
+import {http} from '../../helpers/http/http'
 import {API} from '../../constants/api'
-import {router} from '../../helpers/router-instance'
+import {router} from '../../helpers/router/router-instance'
 import {Pathname} from '../../models/enums/pathname'
 
 export class ChatUsersComponent extends FormBlock {
@@ -19,12 +19,9 @@ export class ChatUsersComponent extends FormBlock {
     }
 
     userSubmit = (event: Event) => {
-        const object = this.submit(event)
+        const fn = (addRequest: any) => http.put(API.chatUsers, addRequest)
+            .then(() => router.go(Pathname.Slash))
 
-        if (object !== null) {
-            object.chatId = router.history.state.chatId
-            http.put(API.chatUsers, object)
-                .then(() => router.go(Pathname.Slash))
-        }
+        this.findSubmit(event, fn)
     }
 }

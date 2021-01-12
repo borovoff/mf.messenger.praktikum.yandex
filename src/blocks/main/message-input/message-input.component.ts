@@ -1,4 +1,4 @@
-import {Block} from '../../../block'
+import {Block} from '../../../components/block/block'
 import {messageInputTemplate} from './message-input.template'
 import './message-input.sass'
 

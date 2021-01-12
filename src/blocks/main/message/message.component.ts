@@ -1,5 +1,5 @@
 import {messageTemplate} from './message.template'
-import {Block} from '../../../block'
+import {Block} from '../../../components/block/block'
 import './message.sass'
 
 export class MessageComponent extends Block {

@@ -1,6 +1,6 @@
-import {Route} from './route'
-import {Block} from '../block'
-import {queryStringify} from './query-stringify'
+import {Route} from '../route/route'
+import {Block} from '../../components/block/block'
+import {queryStringify} from '../query-stringify'
 
 export class Router {
     routes: Route[] = []

@@ -1,10 +1,10 @@
 import {changePasswordTemplate} from './change-password.template'
-import {FormBlock} from '../../components/form-block'
+import {FormBlock} from '../../components/block/form-block'
 import './change-password.sass'
 import '../authorization/authotization.sass'
-import {http} from '../../helpers/http'
+import {http} from '../../helpers/http/http'
 import {API} from '../../constants/api'
-import {router} from '../../helpers/router-instance'
+import {router} from '../../helpers/router/router-instance'
 import {Pathname} from '../../models/enums/pathname'
 import {kebabToCamel} from '../../helpers/kebab-to-camel'
 

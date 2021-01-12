@@ -1,4 +1,4 @@
-import {Block} from '../block'
+import {Block} from './block'
 
 export class ContextMenuBlock extends Block {
     private readonly menuClass: string

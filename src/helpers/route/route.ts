@@ -1,5 +1,5 @@
-import {render} from './render'
-import {Block} from '../block'
+import {render} from '../render'
+import {Block} from '../../components/block/block'
 
 export class Route {
     _pathname: string

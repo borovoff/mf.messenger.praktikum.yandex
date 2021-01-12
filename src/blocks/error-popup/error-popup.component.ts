@@ -1,4 +1,4 @@
-import {Block} from '../../block'
+import {Block} from '../../components/block/block'
 import {errorPopupTemplate} from './error-popup.template'
 import './error.sass'
 
