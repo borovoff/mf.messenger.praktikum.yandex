@@ -1,0 +1,81 @@
+\:root
+    --placeholder-blue: rgb(57, 146, 233)
+    --button-blue: rgb(83, 166, 243)
+    --placeholder-gray: rgb(112, 117, 121)
+
+
+.before-messages
+    display: flex
+    flex-direction: column
+    align-items: center
+    justify-content: center
+    height: 100%
+
+
+.before-messages-caption
+    display: flex
+    flex-direction: column
+    align-items: center
+    font-size: 22px
+    color: var(--placeholder-gray)
+    margin: 20px
+
+
+.bm-buttons
+    display: flex
+    justify-content: space-between
+    width: 346px
+
+
+.bm-button-container
+    display: flex
+    flex-direction: column
+    align-items: center
+    cursor: pointer
+
+
+.bm-caption
+    color: var(--placeholder-gray)
+    font-size: 12px
+
+
+.bm-img
+    background-color: var(--placeholder-gray)
+    width: 34px
+    height: 34px
+    margin: 20px
+
+
+.bm-private
+    -webkit-mask: url(../../../assets/newprivate_svg.svg) no-repeat center
+    mask: url(../../../assets/newprivate_svg.svg) no-repeat center
+
+
+.bm-group
+    -webkit-mask: url(../../../assets/newgroup_svg.svg) no-repeat center
+    mask: url(../../../assets/newgroup_svg.svg) no-repeat center
+
+
+.bm-channel
+    -webkit-mask: url(../../../assets/newchannel_svg.svg) no-repeat center
+    mask: url(../../../assets/newchannel_svg.svg) no-repeat center
+
+
+.bm-button
+    width: 74px
+    height: 74px
+    background-color: white
+    border-radius: 50%
+    margin: 8px
+
+
+.bm-button-container:hover .bm-button
+    background-color: var(--button-blue)
+
+
+.bm-button-container:hover .bm-img
+    background-color: white
+
+
+.bm-button-container:hover .bm-caption
+    color: var(--placeholder-blue)

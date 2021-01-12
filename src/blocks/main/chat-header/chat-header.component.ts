@@ -29,10 +29,10 @@ export class ChatHeaderComponent extends ContextMenuBlock {
     }
 
     addMembers = () => {
-        router.go(Pathname.ChatUsers)
+        router.go(Pathname.ChatUsers, {chatId: this.context.chat.id})
     }
 
     removeUser = () => {
-        router.go(Pathname.RemoveUser)
+        router.go(Pathname.RemoveUser, {chatId: this.context.chat.id})
     }
 }

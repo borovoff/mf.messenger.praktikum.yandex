@@ -91,7 +91,7 @@ export class FormBlock extends Block {
         this.verify(element)
     }
 
-    submit = (event: Event): CustomNullable<Object> => {
+    submit = (event: Event): CustomNullable<any> => {
         event.preventDefault()
 
         let verified = true

@@ -16,11 +16,14 @@ export const mainTemplate = `
         </ul>
     </div>
     <div class="right-column">
+        <app-before-messages [class]="beforeClass"></app-before-messages>
+
         <app-chat-header
+            [class]="headerClass"
             [chat]="currentChat"
             [chatTitle]="chatTitle"></app-chat-header>
 
-        <div class="messages-component">
+        <div [class]="messagesClass">
             <ul class="ul messages">
                 <app-message
                     *for="message of messages"
@@ -31,7 +34,7 @@ export const mainTemplate = `
             </ul>
         </div>
 
-        <app-message-input></app-message-input>
+        <app-message-input [class]="inputClass"></app-message-input>
     </div>
 </div>
 `

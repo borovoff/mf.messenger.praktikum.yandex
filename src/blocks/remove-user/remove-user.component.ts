@@ -22,6 +22,7 @@ export class RemoveUserComponent extends FormBlock {
         const object = this.submit(event)
 
         if (object !== null) {
+            object.chatId = router.history.state.chatId
             http.put(API.chatUsers, object)
                 .then(() => router.go(Pathname.Slash))
         }

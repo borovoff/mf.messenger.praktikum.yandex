@@ -1,6 +1,7 @@
 import {router} from './router-instance'
 import {Pathname} from '../models/enums/pathname'
 import {showError} from './show-error'
+import {queryStringify} from './query-stringify'
 
 enum Method {
     GET = 'GET',
@@ -12,16 +13,6 @@ enum Method {
 interface RequestOptions {
     data?: Object
     method: Method
-}
-
-function queryStringify(data: Object) {
-    let result = '?'
-
-    for (const [key, value] of Object.entries(data)) {
-        result += `${key}=${value}&`
-    }
-
-    return result.slice(0, -1)
 }
 
 export class HTTPTransport {
@@ -74,7 +65,7 @@ export class HTTPTransport {
                         break
                     default:
                         showError({
-                            errorJson: xhr.response,
+                            errorJson: JSON.stringify(response, undefined, 4),
                             outerClass: 'cancel-area flex-center'
                         })
                         reject(response)

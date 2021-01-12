@@ -23,6 +23,8 @@ import {CreateChatComponent} from './blocks/create-chat/create-chat.component'
 import {ChatUsersComponent} from './blocks/chat-users/chat-users.component'
 import {RemoveUserComponent} from './blocks/remove-user/remove-user.component'
 import {ErrorPopupComponent} from './blocks/error-popup/error-popup.component'
+import {BeforeMessagesComponent} from './blocks/main/before-messages/before-messages.component'
+import {BeforeMessagesButtonComponent} from './blocks/main/before-messages/before-messages-button/before-messages-button.component'
 
 export class ComponentRegistry {
     constructor() {
@@ -42,6 +44,9 @@ export class ComponentRegistry {
         customElements.define('app-chats-actions', ChatsActionsComponent)
         customElements.define('app-message-input', MessageInputComponent)
         customElements.define('app-control-row', ControlRowComponent)
+
+        customElements.define('app-before-messages', BeforeMessagesComponent)
+        customElements.define('app-before-messages-button', BeforeMessagesButtonComponent)
 
         customElements.define('app-photo-picker', PhotoPickerComponent)
         customElements.define('app-error', ErrorComponent)

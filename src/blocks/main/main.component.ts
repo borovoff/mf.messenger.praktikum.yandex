@@ -10,6 +10,10 @@ export class MainComponent extends Block {
     private currentChat?: ChatComponent
 
     constructor(context: Object = {
+        headerClass: 'hide',
+        messagesClass: 'hide',
+        inputClass: 'hide',
+        beforeClass: 'before-messages',
         messages: [
             {
                 class: 'message stranger last first',
@@ -75,10 +79,6 @@ export class MainComponent extends Block {
     }) {
         super(context, mainTemplate)
 
-        http.get<ChatsResponse[]>(API.chats).then(result => this.setContext({
-            chats: result
-        }))
-
         this.setContext({
             chatClick: this.chatClick
         })
@@ -91,13 +91,25 @@ export class MainComponent extends Block {
         })
     }
 
+    addToDom() {
+        super.addToDom()
+
+        http.get<ChatsResponse[]>(API.chats).then(result => this.setContext({
+            chats: result
+        }))
+    }
+
     setCurrent = (target: ChatComponent) => {
         this.currentChat = target
         target.classList.add('chat_current')
         const context = target.context
         this.setContext({
             chatTitle: context.chatTitle,
-            currentChat: context.chat
+            currentChat: context.chat,
+            beforeClass: 'hide',
+            headerClass: 'chat-header',
+            messagesClass: 'messages-component',
+            inputClass: 'input-component'
         })
     }
 

@@ -1,4 +1,6 @@
-export function render(query: string, block: HTMLElement) {
+import {Block} from '../block'
+
+export function render(query: string, block: Block) {
     const root = document.querySelector(query) as HTMLElement
 
     while (root.childElementCount > 0) {
@@ -6,6 +8,7 @@ export function render(query: string, block: HTMLElement) {
     }
 
     root.appendChild(block)
+    block.addToDom()
 
     return root
 }

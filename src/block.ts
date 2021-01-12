@@ -108,7 +108,15 @@ export class Block extends HTMLElement {
 
                         if (element.tagName === undefined) {
                             const {elementProperties, element: forElement} = item.forStore as ForStore
-                            if (value) {
+                            const parent = element.parentElement
+                            if (value && parent !== null) {
+                                let previous = element.previousElementSibling
+                                while (previous && previous.tagName !== undefined) {
+                                    const p = previous.previousElementSibling
+                                    previous.remove()
+                                    previous = p
+                                }
+
                                 value.forEach((v: any) => {
                                     const newElement = forElement.cloneNode(false) as Block
                                     for (const [key, propertyValue] of Object.entries(elementProperties)) {
@@ -133,10 +141,7 @@ export class Block extends HTMLElement {
                                         }
                                     }
 
-                                    const parent = element.parentElement
-                                    if (parent !== null) {
-                                        parent.insertBefore(newElement, element)
-                                    }
+                                    parent.insertBefore(newElement, element)
                                 })
                             }
 
@@ -195,5 +200,9 @@ export class Block extends HTMLElement {
 
     hide() {
         this.getContent().style.display = 'none'
+    }
+
+    addToDom() {
+
     }
 }

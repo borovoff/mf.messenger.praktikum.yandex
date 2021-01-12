@@ -1,5 +1,6 @@
 import {Route} from './route'
 import {Block} from '../block'
+import {queryStringify} from './query-stringify'
 
 export class Router {
     routes: Route[] = []
@@ -50,8 +51,10 @@ export class Router {
         route.render()
     }
 
-    go(pathname: string) {
-        this.history.pushState({}, '', pathname)
+    go(pathname: string, data?: any) {
+        const state = data ? queryStringify(data) : ''
+
+        this.history.pushState(data, '', pathname + state)
         this._onRoute(pathname)
     }
 
