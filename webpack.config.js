@@ -37,6 +37,7 @@ module.exports = {
     },
     devServer: {
         contentBase: dist,
+        historyApiFallback: true
     },
     devtool: 'inline-source-map',
     plugins: [
