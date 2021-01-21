@@ -2,9 +2,8 @@ import {controlRowTemplate} from './control-row.template'
 import './control-row.sass'
 import {router} from '../../../helpers/router/router-instance'
 import {Pathname} from '../../../models/enums/pathname'
-import {http} from '../../../helpers/http/http'
-import {API} from '../../../constants/api'
 import {ContextMenuBlock} from '../../../components/block/context-menu-block'
+import {api} from '../../../helpers/api/api'
 
 export class ControlRowComponent extends ContextMenuBlock {
     constructor(context: Object = {
@@ -43,7 +42,7 @@ export class ControlRowComponent extends ContextMenuBlock {
     }
 
     logout = () => {
-        http.post(API.logout)
+        api.logout
             .then(() => router.go(Pathname.Authorization))
     }
 }

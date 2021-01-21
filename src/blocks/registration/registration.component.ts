@@ -1,10 +1,9 @@
 import {registrationTemplate} from './registration.template'
 import {FormBlock} from '../../components/block/form-block'
 import '../authorization/authotization.sass'
-import {http} from '../../helpers/http/http'
-import {API} from '../../constants/api'
 import {Pathname} from '../../models/enums/pathname'
 import {router} from '../../helpers/router/router-instance'
+import {api} from '../../helpers/api/api'
 
 export class RegistrationComponent extends FormBlock {
     constructor(context: Object = {
@@ -27,7 +26,7 @@ export class RegistrationComponent extends FormBlock {
         const object = this.submit(event)
 
         if (object !== null) {
-            http.post(API.signup, object)
+            api.signup(object)
                 .then(() => router.go(Pathname.Slash))
         }
     }

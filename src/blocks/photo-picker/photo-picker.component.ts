@@ -1,12 +1,9 @@
 import {Block} from '../../components/block/block'
 import {photoPickerTemplate} from './photo-picker.template'
 import './photo-picker.sass'
-import {http} from '../../helpers/http/http'
-import {API} from '../../constants/api'
+import {api} from '../../helpers/api/api'
 
 export class PhotoPickerComponent extends Block {
-    file: File
-
     constructor(context: Object = {
         checkButton: {
             outer: 'check-picker',
@@ -27,17 +24,16 @@ export class PhotoPickerComponent extends Block {
         })
 
         this.setContext({
-            sendPhoto: this.sendPhoto,
             hidePicker: this.hidePicker
         })
 
         setTimeout(this.setFileInput)
     }
 
-    sendPhoto = () => {
+    sendPhoto = (file: File) => {
         const formData = new FormData()
-        formData.append('avatar', this.file)
-        http.put(API.userAvatar, formData).then(() => this.hidePicker())
+        formData.append('avatar', file)
+        api.avatar(formData).then(() => this.hidePicker())
     }
 
     hidePicker = () => {
@@ -52,18 +48,19 @@ export class PhotoPickerComponent extends Block {
 
             const files = fileInput.files
             if (files) {
-                this.file = files[0]
+                const file = files[0]
                 const reader = new FileReader()
 
                 reader.onload = (event) => {
                     // @ts-ignore
                     const imgSrc = event.target.result
                     this.setContext({
-                        imgSrc: imgSrc
+                        imgSrc: imgSrc,
+                        sendPhoto: () => this.sendPhoto(file),
                     })
                 }
 
-                reader.readAsDataURL(this.file)
+                reader.readAsDataURL(file)
             }
         }
     }

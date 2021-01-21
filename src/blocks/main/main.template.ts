@@ -23,13 +23,15 @@ export const mainTemplate = `
             [chat]="currentChat"
             [chatTitle]="chatTitle"></app-chat-header>
 
-        <div [class]="messagesClass">
+        <div
+            id="messages"
+            [class]="messagesClass">
             <ul class="ul messages">
                 <app-message
                     *for="message of messages"
                     [class]="message.class"
-                    [text]="message.text"
-                    [time]="message.time"
+                    [text]="message.content"
+                    [time]="message.timeFormatted"
                     [imgClass]="message.imgClass"></app-message>
             </ul>
         </div>

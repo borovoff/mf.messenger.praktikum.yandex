@@ -3,8 +3,7 @@ import {FormBlock} from '../../components/block/form-block'
 import './authotization.sass'
 import {router} from '../../helpers/router/router-instance'
 import {Pathname} from '../../models/enums/pathname'
-import {http} from '../../helpers/http/http'
-import {API} from '../../constants/api'
+import {api} from '../../helpers/api/api'
 
 export class AuthorizationComponent extends FormBlock {
     constructor(context: Object = {
@@ -29,7 +28,7 @@ export class AuthorizationComponent extends FormBlock {
         const object = this.submit(event)
 
         if (object !== null) {
-            http.post(API.signin, object)
+            api.signin(object)
                 .then(() => router.go(Pathname.Slash))
         }
     }

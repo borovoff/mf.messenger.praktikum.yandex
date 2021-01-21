@@ -4,10 +4,8 @@ import {CustomNullable} from '../../models/types/custom-nullable'
 import {ElementProperties} from '../../models/types/element-properties'
 import {nameToKey} from '../../helpers/name-to-key'
 import {router} from '../../helpers/router/router-instance'
-import {http} from '../../helpers/http/http'
-import {UserResponse} from '../../models/api/user/user-response'
-import {API} from '../../constants/api'
 import {showError} from '../../helpers/show-error'
+import {api} from '../../helpers/api/api'
 
 type NullableString = string | null
 
@@ -71,20 +69,20 @@ export class FormBlock extends Block {
         const dataset = caption.dataset
 
         if (error) {
-            element.classList.add('invalid-input')
+            element.classList.add('input_invalid')
 
             if (!dataset[key]) {
                 dataset[key] = caption.innerText
             }
 
             caption.textContent = error
-            caption.classList.add('invalid-caption')
+            caption.classList.add('caption_invalid')
 
             return false
         } else {
-            element.classList.remove('invalid-input')
+            element.classList.remove('input_invalid')
             caption.textContent = dataset[key] as string
-            caption.classList.remove('invalid-caption')
+            caption.classList.remove('caption_invalid')
 
             return true
         }
@@ -124,7 +122,7 @@ export class FormBlock extends Block {
         const object = this.submit(event)
 
         if (object !== null) {
-            http.post<UserResponse[]>(API.getByLogin, object)
+            api.search(object)
                 .then(result => {
                     if (result.length === 0) {
                         showError('No results')

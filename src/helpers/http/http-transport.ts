@@ -56,17 +56,15 @@ export class HTTPTransport {
                     response = JSON.parse(xhr.response)
                 } catch (e) {}
 
-                switch (xhr.status) {
-                    case 200:
-                        resolve(response)
-                        break
-                    case 401:
-                        router.go(Pathname.Authorization)
-                        break
-                    default:
-                        showError(JSON.stringify(response, undefined, 4))
-                        reject(response)
-                        break
+                const status = xhr.status
+
+                if (status >= 200 && status < 300) {
+                    resolve(response)
+                } else if (status === 401) {
+                    router.go(Pathname.Authorization)
+                } else {
+                    showError(JSON.stringify(response, undefined, 4))
+                    reject(response)
                 }
             }
 

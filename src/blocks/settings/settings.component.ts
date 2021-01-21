@@ -3,16 +3,14 @@ import {FormBlock} from '../../components/block/form-block'
 import './settings.sass'
 import '../change-password/change-password.sass'
 import '../authorization/authotization.sass'
-import {http} from '../../helpers/http/http'
-import {UserResponse} from '../../models/api/user/user-response'
-import {API} from '../../constants/api'
 import {kebabToCamel} from '../../helpers/kebab-to-camel'
 import {router} from '../../helpers/router/router-instance'
 import {Pathname} from '../../models/enums/pathname'
 import {API_IS_SUCK} from '../../constants/api-is-suck'
+import {api} from '../../helpers/api/api'
 
 export class SettingsComponent extends FormBlock {
-    fileInput: HTMLInputElement
+    fileInput!: HTMLInputElement
 
     constructor(context: Object = {
         firstNameName:  'First name',
@@ -29,7 +27,7 @@ export class SettingsComponent extends FormBlock {
     }) {
         super(context, settingsTemplate)
 
-        http.get<UserResponse>(API.user)
+        api.user
             .then(response => {
 
                 for (let [key, value] of Object.entries(response)) {
@@ -60,7 +58,7 @@ export class SettingsComponent extends FormBlock {
         const object = this.submit(event)
 
         if (object !== null) {
-            http.put(API.changeProfile, object)
+            api.changeProfile(object)
                 .then(() => router.go(Pathname.Slash))
         }
     }

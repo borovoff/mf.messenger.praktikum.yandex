@@ -2,11 +2,10 @@ import {changePasswordTemplate} from './change-password.template'
 import {FormBlock} from '../../components/block/form-block'
 import './change-password.sass'
 import '../authorization/authotization.sass'
-import {http} from '../../helpers/http/http'
-import {API} from '../../constants/api'
 import {router} from '../../helpers/router/router-instance'
 import {Pathname} from '../../models/enums/pathname'
 import {kebabToCamel} from '../../helpers/kebab-to-camel'
+import {api} from '../../helpers/api/api'
 
 export class ChangePasswordComponent extends FormBlock {
     constructor(context: Object = {
@@ -34,7 +33,7 @@ export class ChangePasswordComponent extends FormBlock {
                 camelObject[kebabToCamel(key)] = value
             }
 
-            http.put(API.changePassword, camelObject)
+            api.changePassword(camelObject)
                 .then(() => router.go(Pathname.Slash))
         }
     }
