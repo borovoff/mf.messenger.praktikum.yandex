@@ -8,11 +8,12 @@
         "start": "node server.js",
         "tsc": "tsc",
         "webpack": "webpack-dev-server --open",
-        "deploy": "webpack --display-modules"
+        "deploy": "webpack --display-modules",
+        "lint": "./node_modules/.bin/eslint"
     },
     "husky": {
         "hooks": {
-            "pre-commit": "test"
+            "pre-commit": "npm test"
         }
     },
     "repository": {
@@ -52,7 +53,6 @@
         "sass": "^1.30.0",
         "sass-loader": "^10.1.0",
         "style-loader": "^2.0.0",
-        "stylelint": "^13.8.0",
         "ts-loader": "^6.2.1",
         "typescript": "^3.9.7",
         "webpack": "^4.44.2",
