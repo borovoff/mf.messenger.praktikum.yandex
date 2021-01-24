@@ -7,7 +7,7 @@ export class Route {
     _block: Block
     _rootQuery: string
 
-    constructor(pathname: string, view: typeof Block, rootQuery: string) {
+    constructor(pathname: string, rootQuery: string, view: typeof Block) {
         this._pathname = pathname
         this._blockClass = view
         this._rootQuery = rootQuery

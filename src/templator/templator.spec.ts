@@ -1,12 +1,12 @@
-import { expect } from 'chai';
 import {Templator} from './templator'
+import { expect } from 'chai'
 
 describe('Templator test', () => {
-    it('templator have to have template property', () => {
+    it('templator should can parse and append', () => {
         const jsdom = require('jsdom')
         const { JSDOM } = jsdom
         const { document } = (new JSDOM(`...`)).window
-        // @ts-ignore
-        expect(new Templator('', document, {name: 'name'})).to.have.a.property('template');
+        new Templator('<div>{{name}}</div>', document, {name: 'john'})
+        expect(document.firstChild.textContent, 'john')
     })
 })

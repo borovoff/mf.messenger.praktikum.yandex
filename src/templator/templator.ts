@@ -69,42 +69,13 @@ export class Templator {
         }
     }
 
-    addToStore(value: string, key: string, element = this.element, forStore?: ForStore): StoreResult {
-        let arrayStore: ArrayStore
-
-        if (value.includes('+')) {
-            let tokens = value.split('+')
-            const index = tokens.findIndex(element => !element.includes('\''))
-
-            tokens = tokens.map(token => token.trim().replace(/'/g, ''))
-
-            if (index > -1) {
-                arrayStore = {tokens, index}
-                value = tokens[index]
-            } else {
-                throw new Error('not found variable')
-            }
-        }
-
-        if (this._store[value] === undefined) {
-            this._store[value] = []
-        }
-
-        // @ts-ignore
-        this._store[value].push({property: key, element: element, arrayStore, forStore})
-
-        // @ts-ignore
-        return {value, arrayStore}
-    }
-
     textContent() {
         const start = this.i - 1
 
         while (this.i < this.template.length) {
-            const next = this.template.charAt(this.i + 1)
+            const char = this.template.charAt(this.i)
 
-            if (next === '<') {
-                this.i++
+            if (char === '<') {
                 this.parent.textContent = this.template.slice(start, this.i)
                 return
             }
@@ -130,63 +101,6 @@ export class Templator {
 
             this.i++
         }
-    }
-
-    setAttr(itemName?: string): ForStore {
-        const element = this.addTag(this.elementStore.tag)
-        const elementProperties: ElementProperties = {}
-
-        for (let [key, value] of Object.entries(this.elementStore.elementProperties)) {
-            const first = key.charAt(0)
-            const last = key.charAt(key.length - 1)
-
-            if (first === '[' && last === ']') {
-                key = key.slice(1, key.length - 1)
-
-                if (itemName !== undefined && value.startsWith(itemName)) {
-                    elementProperties[key] = value
-                    continue
-                }
-
-                const result = this.addToStore(value, key, element)
-                value = contextGet(result.arrayStore ? result.value : value, this.context)
-                setProperty(element, value, key, result.arrayStore)
-            } else {
-                setProperty(element, value, key)
-            }
-        }
-
-        return {element, elementProperties}
-    }
-
-    setAttributes() {
-        // TODO: add nested elements in for and if not custom element
-        const properties = this.elementStore.elementProperties
-
-        if (properties.hasOwnProperty('*for')) {
-            const start = document.createComment('start')
-            const end = document.createComment('end')
-
-            const array = properties['*for'].split(' of ')
-            const [itemName, itemsName] = array
-
-            const {element, elementProperties} = this.setAttr(itemName)
-
-            const values = contextGet(itemsName, this.context)
-
-            this.addToStore(itemsName, itemName, end, {element, elementProperties})
-            this.parent.appendChild(start)
-            this.parent.appendChild(end)
-            this.element = end
-
-            forInsert(values, element, elementProperties, itemName, this.parent as HTMLElement, end)
-        } else {
-            const {element} = this.setAttr()
-            this.element = element
-            this.parent.appendChild(element)
-        }
-
-        this.elementStore.elementProperties = {}
     }
 
     getValue(): string {
@@ -294,5 +208,90 @@ export class Templator {
 
     get store(): Store {
         return this._store
+    }
+
+    addToStore(value: string, key: string, element = this.element, forStore?: ForStore): StoreResult {
+        let arrayStore: ArrayStore
+
+        if (value.includes('+')) {
+            let tokens = value.split('+')
+            const index = tokens.findIndex(element => !element.includes('\''))
+
+            tokens = tokens.map(token => token.trim().replace(/'/g, ''))
+
+            if (index > -1) {
+                arrayStore = {tokens, index}
+                value = tokens[index]
+            } else {
+                throw new Error('not found variable')
+            }
+        }
+
+        if (this._store[value] === undefined) {
+            this._store[value] = []
+        }
+
+        // @ts-ignore
+        this._store[value].push({property: key, element: element, arrayStore, forStore})
+
+        // @ts-ignore
+        return {value, arrayStore}
+    }
+
+    setAttr(itemName?: string): ForStore {
+        const element = this.addTag(this.elementStore.tag)
+        const elementProperties: ElementProperties = {}
+
+        for (let [key, value] of Object.entries(this.elementStore.elementProperties)) {
+            const first = key.charAt(0)
+            const last = key.charAt(key.length - 1)
+
+            if (first === '[' && last === ']') {
+                key = key.slice(1, key.length - 1)
+
+                if (itemName !== undefined && value.startsWith(itemName)) {
+                    elementProperties[key] = value
+                    continue
+                }
+
+                const result = this.addToStore(value, key, element)
+                value = contextGet(result.arrayStore ? result.value : value, this.context)
+                setProperty(element, value, key, result.arrayStore)
+            } else {
+                setProperty(element, value, key)
+            }
+        }
+
+        return {element, elementProperties}
+    }
+
+    setAttributes() {
+        // TODO: add nested elements in for and if not custom element
+        const properties = this.elementStore.elementProperties
+
+        if (properties.hasOwnProperty('*for')) {
+            const start = document.createComment('start')
+            const end = document.createComment('end')
+
+            const array = properties['*for'].split(' of ')
+            const [itemName, itemsName] = array
+
+            const {element, elementProperties} = this.setAttr(itemName)
+
+            const values = contextGet(itemsName, this.context)
+
+            this.addToStore(itemsName, itemName, end, {element, elementProperties})
+            this.parent.appendChild(start)
+            this.parent.appendChild(end)
+            this.element = end
+
+            forInsert(values, element, elementProperties, itemName, this.parent as HTMLElement, end)
+        } else {
+            const {element} = this.setAttr()
+            this.element = element
+            this.parent.appendChild(element)
+        }
+
+        this.elementStore.elementProperties = {}
     }
 }

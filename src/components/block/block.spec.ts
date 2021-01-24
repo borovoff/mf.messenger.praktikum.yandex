@@ -1,5 +1,0 @@
-describe('Block test', () => {
-    it('should succeed', (done) => {
-        setTimeout(done, 1000)
-    })
-})

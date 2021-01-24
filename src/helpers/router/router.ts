@@ -21,7 +21,7 @@ export class Router {
     }
 
     use(pathname: string, block: typeof Block): Router {
-        const route = new Route(pathname, block, this._rootQuery)
+        const route = new Route(pathname, this._rootQuery, block)
         this.routes.push(route)
 
         return this
