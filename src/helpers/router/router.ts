@@ -43,10 +43,6 @@ export class Router {
             throw new Error('Route not found')
         }
 
-        if (this._currentRoute) {
-            this._currentRoute.leave()
-        }
-
         this._currentRoute = route
         route.render()
     }

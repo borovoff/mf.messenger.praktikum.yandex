@@ -1,9 +1,10 @@
 import {Store} from '../models/store'
-import {Block} from 'src/components/block/block'
 import {ArrayStore} from '../models/array-store'
 import {ElementProperties} from '../models/types/element-properties'
 import {ForStore} from '../models/for-store'
 import {contextGet} from '../helpers/context-get'
+import {forInsert} from '../helpers/for-insert'
+import {setProperty} from '../helpers/set-property'
 
 interface StoreResult {
     value: string
@@ -56,14 +57,7 @@ export class Templator {
                         const key = 'textContent'
                         const value = this.getReactValue()
                         const result = this.addToStore(value, key)
-
-                        const arrayStore = result.arrayStore
-                        if (arrayStore === undefined) {
-                            this.element[key] = contextGet(result.value, this.context)
-                        } else {
-                            arrayStore.tokens[arrayStore.index] = contextGet(result.value, this.context)
-                            this.element[key] = arrayStore.tokens.join(' ')
-                        }
+                        this.element[key] = contextGet(result.value, this.context)
 
                         this.i += 2
                     }
@@ -146,8 +140,6 @@ export class Templator {
             const first = key.charAt(0)
             const last = key.charAt(key.length - 1)
 
-            // TODO: rewrite
-            let result: StoreResult
             if (first === '[' && last === ']') {
                 key = key.slice(1, key.length - 1)
 
@@ -156,32 +148,11 @@ export class Templator {
                     continue
                 }
 
-                result = this.addToStore(value, key, element)
-                value = contextGet(value, this.context)
-            }
-
-            // TODO: same logic as block proxy
-            if (element.tagName.slice(0, 4) === 'APP-') {
-                if (key === 'class') {
-                    element.className = value
-                } else {
-                    (element as Block).setContext({[key]: value})
-                }
+                const result = this.addToStore(value, key, element)
+                value = contextGet(result.arrayStore ? result.value : value, this.context)
+                setProperty(element, value, key, result.arrayStore)
             } else {
-                if (key === 'submit' || key === 'blur' || key === 'focus' || key === 'click') {
-                    // @ts-ignore
-                    const fn = value as (event: Event) => any
-                    element.addEventListener(key, fn)
-                } else {
-                    // @ts-ignore
-                    if (result && result.arrayStore) {
-                        const arrayStore = result.arrayStore
-                        arrayStore.tokens[arrayStore.index] = contextGet(result.value, this.context)
-                        element.setAttribute(key, arrayStore.tokens.join(' '))
-                    } else {
-                        element.setAttribute(key, value ?? '')
-                    }
-                }
+                setProperty(element, value, key)
             }
         }
 
@@ -205,32 +176,10 @@ export class Templator {
 
             this.addToStore(itemsName, itemName, end, {element, elementProperties})
             this.parent.appendChild(start)
-
-            if (values) {
-                values.forEach((value: any) => {
-                    const newElement = element.cloneNode(false) as Block
-
-                    for (const [key, propertyValue] of Object.entries(elementProperties)) {
-                        let val = value
-
-                        if (propertyValue.includes('.')) {
-                            const path = propertyValue.slice(itemName.length + 1)
-                            val = contextGet(path, value)
-                        }
-
-                        if (key === 'class') {
-                            newElement.className = val
-                        } else {
-                            newElement.setContext({[key]: val})
-                        }
-                    }
-
-                    this.parent.appendChild(newElement)
-                })
-            }
-
             this.parent.appendChild(end)
             this.element = end
+
+            forInsert(values, element, elementProperties, itemName, this.parent as HTMLElement, end)
         } else {
             const {element} = this.setAttr()
             this.element = element

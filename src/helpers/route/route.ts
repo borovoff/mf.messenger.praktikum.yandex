@@ -20,12 +20,6 @@ export class Route {
         }
     }
 
-    leave() {
-        if (this._block) {
-            this._block.hide()
-        }
-    }
-
     match(pathname: string) {
         return pathname === this._pathname
     }

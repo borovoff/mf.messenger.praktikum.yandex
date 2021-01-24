@@ -1,82 +1,51 @@
 import {EventBus} from '../../event-bus'
 import {Store} from '../../models/store'
 import {ForStore} from '../../models/for-store'
-import {contextGet} from '../../helpers/context-get'
 import {Templator} from '../../templator/templator'
+import {StoreItem} from '../../models/store-item'
+import {forInsert} from '../../helpers/for-insert'
+import {setProperty} from '../../helpers/set-property'
 
-interface Meta {
-    tagName: string
+enum Events {
+    INIT = 'init',
+    FLOW_CDM = 'flow:component-did-mount',
+    FLOW_CDU = 'flow:component-did-update',
+    FLOW_RENDER = 'flow:render'
 }
 
-export class Block extends HTMLElement {
-    static EVENTS = {
-        INIT: 'init',
-        FLOW_CDM: 'flow:component-did-mount',
-        FLOW_CDU: 'flow:component-did-update',
-        FLOW_RENDER: 'flow:render'
-    }
-    _element: HTMLElement
-    _meta: Meta
-    eventBus: () => EventBus
 
+export class Block extends HTMLElement {
+    eventBus: EventBus
     context: any
     protected store: Store
     private readonly template: string
 
     constructor(context: Object = {}, template: string = '') {
         super()
-
         this.template = template
-
-        const eventBus = new EventBus()
-        this._meta = {
-            tagName: 'div'
-        }
-
         this.context = this._makeContextProxy(context)
-        this.eventBus = () => eventBus
-        this._registerEvents(eventBus)
-        eventBus.emit(Block.EVENTS.INIT)
+        this.eventBus = new EventBus()
+        this._registerEvents(this.eventBus)
+        this.eventBus.emit(Events.INIT)
     }
 
     _registerEvents(eventBus: EventBus) {
-        eventBus.on(Block.EVENTS.INIT, this.init.bind(this))
-        eventBus.on(Block.EVENTS.FLOW_CDM, this._componentDidMount.bind(this))
-        eventBus.on(Block.EVENTS.FLOW_CDU, this._componentDidUpdate.bind(this))
-        eventBus.on(Block.EVENTS.FLOW_RENDER, this._render.bind(this))
-    }
-
-    _createResources() {
-        const { tagName } = this._meta
-        this._element = this._createDocumentElement(tagName)
+        eventBus.on(Events.INIT, this.init.bind(this))
+        eventBus.on(Events.FLOW_CDM, this._componentDidMount.bind(this))
+        eventBus.on(Events.FLOW_CDU, this._componentDidUpdate.bind(this))
+        eventBus.on(Events.FLOW_RENDER, this._render.bind(this))
     }
 
     init() {
-        this._createResources()
-        this.eventBus().emit(Block.EVENTS.FLOW_CDM)
+        this.eventBus.emit(Events.FLOW_CDM)
     }
 
     _componentDidMount() {
-        this.componentDidMount()
-        this.eventBus().emit(Block.EVENTS.FLOW_RENDER)
+        this.eventBus.emit(Events.FLOW_RENDER)
     }
-
-    componentDidMount() {}
 
     _componentDidUpdate() {
-        const response = this.componentDidUpdate()
-        if (!response) {
-            return
-        }
         this._render()
-    }
-
-    componentDidUpdate() {
-        return true
-    }
-
-    get element(): HTMLElement {
-        return this._element
     }
 
     _render() {
@@ -89,16 +58,11 @@ export class Block extends HTMLElement {
         this.store = templator.store
     }
 
-    getContent() {
-        return this.element
-    }
-
     setContext(context: Object) {
         Object.assign(this.context, context)
     }
 
-    // @ts-ignore
-    _makeContextProxy(context: Object): Proxy {
+    _makeContextProxy(context: Object): typeof Proxy {
         return new Proxy(context, {
             get: (target: any, prop: string) => {
                 const value = target[prop]
@@ -106,87 +70,8 @@ export class Block extends HTMLElement {
             },
             set: (target, prop: string, value) => {
                 target[prop] = value
-                const items = this.store[prop]
 
-                if (items !== undefined) {
-                    items.forEach(item => {
-                        const element = item.element
-
-                        if (element.tagName === undefined) {
-                            const {elementProperties, element: forElement} = item.forStore as ForStore
-                            const parent = element.parentElement
-                            if (value && parent !== null) {
-                                let previous = element.previousElementSibling
-                                while (previous && previous.tagName !== undefined) {
-                                    const p = previous.previousElementSibling
-                                    previous.remove()
-                                    previous = p
-                                }
-
-                                value.forEach((v: any) => {
-                                    const newElement = forElement.cloneNode(false) as Block
-                                    for (const [key, propertyValue] of Object.entries(elementProperties)) {
-                                        let val = v
-
-                                        if (propertyValue.includes('.')) {
-                                            const path = propertyValue.slice(item.property.length + 1)
-                                            val = contextGet(path, v)
-                                        }
-
-                                        switch (key) {
-                                            case 'class':
-                                                newElement.className = val
-                                                break
-                                            case 'click':
-                                                // @ts-ignore
-                                                const fn = val as (event: Event) => any
-                                                newElement.addEventListener(key, fn)
-                                                break
-                                            default:
-                                                newElement.setContext({[key]: val})
-                                        }
-                                    }
-
-                                    parent.insertBefore(newElement, element)
-                                })
-                            }
-
-                        } else if (element.tagName.slice(0, 4) === 'APP-') {
-                            if (item.property === 'class') {
-                                element.className = value
-                            } else {
-                                (element as Block).setContext({[item.property]: value})
-                            }
-                        } else {
-                            switch (item.property) {
-                                case 'class':
-                                    const arrayStore = item.arrayStore
-                                    if (arrayStore) {
-                                        arrayStore.tokens[arrayStore.index] = value
-                                        const s = arrayStore.tokens.join(' ')
-                                        element.className = s
-                                    } else {
-                                        element.className = value
-                                    }
-                                    break
-                                case 'textContent':
-                                    element.textContent = value
-                                    break
-                                case 'submit':
-                                case 'blur':
-                                case 'focus':
-                                case 'click':
-                                    // @ts-ignore
-                                    const fn = value as (event: Event) => any
-                                    element.addEventListener(item.property, fn)
-                                    break
-                                default:
-                                    element.setAttribute(item.property, value)
-                                    break
-                            }
-                        }
-                    })
-                }
+                this.storeResolver(prop, value)
 
                 return true
             },
@@ -196,16 +81,37 @@ export class Block extends HTMLElement {
         })
     }
 
-    _createDocumentElement(tagName: string) {
-        return document.createElement(tagName)
+    forResolver(items: unknown[], item: StoreItem, element: HTMLElement) {
+        const {elementProperties, element: forElement} = item.forStore as ForStore
+        const parent = element.parentElement
+
+        let previous = element.previousElementSibling
+        while (previous && previous.tagName !== undefined) {
+            const p = previous.previousElementSibling
+            previous.remove()
+            previous = p
+        }
+
+        forInsert(items, forElement, elementProperties, item.property, parent, element)
     }
 
-    show() {
-        this.getContent().style.display = 'block'
-    }
+    storeResolver(prop: string, value: any) {
+        const items = this.store[prop]
 
-    hide() {
-        this.getContent().style.display = 'none'
+        if (items === undefined) {
+            return
+        }
+
+        for (const item of items) {
+            const element = item.element
+
+            if (element.tagName === undefined) {
+                this.forResolver(value, item, element)
+                continue
+            }
+
+            setProperty(element, value, item.property, item.arrayStore)
+        }
     }
 
     addToDom() {
