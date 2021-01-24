@@ -1,7 +1,6 @@
 dist
 node_modules
 ui
-server.js
 README.MD
-./.*
+.*
 netlify.toml
