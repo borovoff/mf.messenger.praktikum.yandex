@@ -15,14 +15,12 @@ module.exports = {
                 test: /\.s[ac]ss$/i,
                 use: [
                     { loader: 'style-loader' },
-                    // [css-loader](/loaders/css-loader)
                     {
                         loader: 'css-loader',
                         options: {
                             url: false,
                         },
                     },
-                    // [sass-loader](/loaders/sass-loader)
                     { loader: 'sass-loader' }
                 ],
             },
@@ -43,7 +41,6 @@ module.exports = {
     plugins: [
         new CopyPlugin([
             { from: './src/assets', to: 'assets' },
-            { from: './src/css', to: 'css' },
             { from: './src/index.html' }
         ])
     ]

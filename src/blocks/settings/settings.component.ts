@@ -6,7 +6,7 @@ import '../authorization/authotization.sass'
 import {kebabToCamel} from '../../helpers/kebab-to-camel'
 import {router} from '../../helpers/router/router-instance'
 import {Pathname} from '../../models/enums/pathname'
-import {API_IS_SUCK} from '../../constants/api-is-suck'
+import {BASE_PATH} from '../../constants/base-path'
 import {api} from '../../helpers/api/api'
 
 export class SettingsComponent extends FormBlock {
@@ -34,7 +34,7 @@ export class SettingsComponent extends FormBlock {
                     const camel = kebabToCamel(key)
 
                     if (key === 'avatar') {
-                        value = API_IS_SUCK + value
+                        value = BASE_PATH + value
                     }
 
                     this.setContext({[`${camel}Value`]: value})
